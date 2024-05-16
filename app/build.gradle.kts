@@ -15,6 +15,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "UNSPLASH_ACCESS_KEY", "\"${property("UNSPLASH_ACCESS_KEY")}\"")
     }
 
     buildTypes {
@@ -36,12 +38,20 @@ android {
 
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
 }
 
 dependencies {
     // Splash
     implementation ("androidx.core:core-splashscreen:1.0.1")
+
+    //coroutines, retrofit2, ojhttp3(api 통신)
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
