@@ -46,7 +46,7 @@ dependencies {
     // Splash
     implementation ("androidx.core:core-splashscreen:1.0.1")
 
-    //coroutines, retrofit2, ojhttp3(api 통신)
+    //coroutines, retrofit2, okhttp3(api 통신)
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
