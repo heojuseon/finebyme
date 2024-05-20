@@ -47,7 +47,7 @@ dependencies {
     implementation ("androidx.core:core-splashscreen:1.0.1")
 
     //coroutines, retrofit2, okhttp3(api 통신)
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //KTX 종속성(수명 주기 인식 구성요소 코루틴 사용)
     //ViewModelScope
@@ -56,6 +56,13 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
     //liveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.0")
+
+    //Glide(이미지)
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+
+    //cardView
+    implementation ("androidx.cardview:cardview:1.0.0")
 
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
