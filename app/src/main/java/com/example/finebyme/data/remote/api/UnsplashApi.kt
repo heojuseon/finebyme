@@ -10,7 +10,7 @@ interface UnsplashApi {
     @GET(
         "photos/random?" +
                 "client_id=${BuildConfig.UNSPLASH_ACCESS_KEY}" +
-                "&count=5"
+                "&count=30"
     )
     suspend fun getPhotoList(): Response<List<PhotoData>>
 //    suspend fun getPhotoList(): List<PhotoData>

@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="150dp"
+    android:layout_width="match_parent"
     android:layout_height="150dp"
+    android:layout_margin="20dp"
     app:cardCornerRadius="30dp"
-    app:cardElevation="10dp">
+    app:cardElevation="50dp"
+    android:id="@+id/photocardView">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/photoImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/app_name" />
+<!--    contentDescription : 시각적으로 정보를 전달하는 보기에서 이 속성 사용    -->
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
