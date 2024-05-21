@@ -21,11 +21,13 @@ data class PhotoData(
     @SerializedName("color")
     val color: String,
 
+    //json 데이터에 null 값이 종종 있음
     @SerializedName("description")
     val description: String?,
 
+    //json 데이터에 null 값이 종종 있음
     @SerializedName("alt_description")
-    val altDescription: String,
+    val altDescription: String?,
 
     @SerializedName("user")
     val user: User,

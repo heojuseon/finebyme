@@ -64,7 +64,7 @@ class ImageListFragment : Fragment() {
         for (photo in phoList) {
             Log.d("photo_id: ", photo.id)
             Log.d("photo_createdAt: ", photo.createdAt)
-            Log.d("photo_altDescription: ", photo.altDescription)
+            Log.d("photo_altDescription: ", photo.altDescription.toString())
             Log.d("photo_description: ", photo.description.toString())
             Log.d("photo_urls: ", photo.urls.regular)
             Log.d("photo_color: ", photo.color)
