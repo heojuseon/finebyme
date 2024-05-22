@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finebyme.adapter.PhotoAdapter
+import com.example.finebyme.adapter.PhotoAdapter.OnPhotoItemClickListener
 import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.data.remote.repository.PhotoRepository
 import com.example.finebyme.databinding.FragmentImageListBinding
@@ -28,6 +29,7 @@ class ImageListFragment : Fragment() {
     private lateinit var binding: FragmentImageListBinding
     private lateinit var photoViewModel: PhotoViewModel
     private val adapter = PhotoAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +41,20 @@ class ImageListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        unsplashImg()
+        initPhoto()
+
+    }
+
+    private fun initPhoto() {
+
+        adapter.setPhotoItemClickListener(object : OnPhotoItemClickListener{
+            override fun onPhotoClick(position: Int, phoList: List<PhotoData>) {
+                Toast.makeText(context, "photoId: ${phoList[position].id}", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        binding.recyclerview.adapter = adapter
+        binding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
 
         photoViewModel = ViewModelProvider(this)[PhotoViewModel::class.java]
         //viewModel 의 photoData 관찰하여 데이터가 변경될 때마다 UI를 업데이트
@@ -51,13 +66,6 @@ class ImageListFragment : Fragment() {
                 Toast.makeText(requireContext(), "No photos found", Toast.LENGTH_SHORT).show()
             }
         })
-
-
-    }
-
-    private fun unsplashImg() {
-        binding.recyclerview.adapter = adapter
-        binding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
     private fun getPhotos(phoList: List<PhotoData>) {
