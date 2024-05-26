@@ -1,7 +1,6 @@
 package com.example.finebyme.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,7 +13,7 @@ class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
 
     //클릭 인터페이스 정의
     interface OnPhotoItemClickListener{
-        fun onPhotoClick(position: Int, phoList: List<PhotoData>)
+        fun onPhotoClick(position: Int, photoList: List<PhotoData>)
     }
 
     //클릭 리스너 선언

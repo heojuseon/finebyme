@@ -1,14 +1,12 @@
 package com.example.finebyme.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.data.remote.repository.PhotoRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,12 +18,21 @@ class PhotoViewModel: ViewModel() {
     //MutableLiveData :
     //LiveData 서브 클래스, 값을 변경 가능(setValue() : 메인스레드에서 값 변경 / postValue() : 백그라운드에서 값 변경)
     //ViewModel 내에서 데이터를 업데이트할 때 사용
-    private val photoList = MutableLiveData<List<PhotoData>>()
+    private val _photoList = MutableLiveData<List<PhotoData>>()
 
     //LiveData:
     //데이터의 변경을 관찰자(주로 View)에게 알리는 역할
     //외부에서 데이터 수정 불가능
-    val photoData: LiveData<List<PhotoData>> = photoList
+    val photoData: LiveData<List<PhotoData>> = _photoList
+
+    private val _selectedPosition = MutableLiveData<Int>()
+    val selectedPosition: LiveData<Int> = _selectedPosition
+
+
+    fun sendData(position: Int, photoList: List<PhotoData>) {
+        _selectedPosition.value = position
+        _photoList.value = photoList
+    }
 
     init {
         photoScope()
@@ -98,7 +105,7 @@ class PhotoViewModel: ViewModel() {
                     PhotoRepository.unsplashApi.getPhotoList()
                 }
                 if (response.isSuccessful) {    //응답 성공시
-                    photoList.postValue(response.body())
+                    _photoList.postValue(response.body())
                 } else {   //응답 실패시
                     withContext(Dispatchers.Main) {
                         Log.d("error: ", "error")

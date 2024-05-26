@@ -6,23 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.finebyme.R
 import com.example.finebyme.adapter.PhotoAdapter
 import com.example.finebyme.adapter.PhotoAdapter.OnPhotoItemClickListener
 import com.example.finebyme.data.remote.model.PhotoData
-import com.example.finebyme.data.remote.repository.PhotoRepository
 import com.example.finebyme.databinding.FragmentImageListBinding
 import com.example.finebyme.viewmodel.PhotoViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 
 class ImageListFragment : Fragment() {
@@ -48,15 +41,17 @@ class ImageListFragment : Fragment() {
     private fun initPhoto() {
 
         adapter.setPhotoItemClickListener(object : OnPhotoItemClickListener{
-            override fun onPhotoClick(position: Int, phoList: List<PhotoData>) {
-                Toast.makeText(context, "photoId: ${phoList[position].id}", Toast.LENGTH_SHORT).show()
+            override fun onPhotoClick(position: Int, photoList: List<PhotoData>) {
+                Toast.makeText(context, "photoId: ${photoList[position].id} + position: $position", Toast.LENGTH_SHORT).show()
+                photoViewModel.sendData(position, photoList)
+                moveDetailFragment()
             }
         })
 
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        photoViewModel = ViewModelProvider(this)[PhotoViewModel::class.java]
+        photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
         //viewModel 의 photoData 관찰하여 데이터가 변경될 때마다 UI를 업데이트
         photoViewModel.photoData.observe(viewLifecycleOwner, Observer { photoList ->
             if (photoList != null) {
@@ -68,8 +63,16 @@ class ImageListFragment : Fragment() {
         })
     }
 
-    private fun getPhotos(phoList: List<PhotoData>) {
-        for (photo in phoList) {
+    private fun moveDetailFragment() {
+        val fragmentTransaction = parentFragmentManager.beginTransaction()
+        val detailFragment = DetailFragment()
+        fragmentTransaction.replace(R.id.main_container, detailFragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+    private fun getPhotos(photoList: List<PhotoData>) {
+        for (photo in photoList) {
             Log.d("photo_id: ", photo.id)
             Log.d("photo_createdAt: ", photo.createdAt)
             Log.d("photo_altDescription: ", photo.altDescription.toString())
