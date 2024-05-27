@@ -1,5 +1,6 @@
 package com.example.finebyme.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.finebyme.PhotoDetailActivity
 import com.example.finebyme.R
 import com.example.finebyme.adapter.PhotoAdapter
 import com.example.finebyme.adapter.PhotoAdapter.OnPhotoItemClickListener
@@ -43,15 +45,26 @@ class ImageListFragment : Fragment() {
         adapter.setPhotoItemClickListener(object : OnPhotoItemClickListener{
             override fun onPhotoClick(position: Int, photoList: List<PhotoData>) {
                 Toast.makeText(context, "photoId: ${photoList[position].id} + position: $position", Toast.LENGTH_SHORT).show()
+
+                //Fragment to Fragment
+//                //ViewModel을 통해 클릭된 이미지 리스트와 포지션 값 설정
+//                photoViewModel.sendData(position, photoList)
+//                moveDetailFragment()
+
+                //Fragment to Activity
                 photoViewModel.sendData(position, photoList)
-                moveDetailFragment()
+                val intent = Intent(context, PhotoDetailActivity::class.java)
+                context?.startActivity(intent)
+//                startActivity(Intent(requireContext(), PhotoDetailActivity::class.java))
             }
         })
 
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
+        //Fragment to Fragment
+//        photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
+        photoViewModel = ViewModelProvider(this)[PhotoViewModel::class.java]
         //viewModel 의 photoData 관찰하여 데이터가 변경될 때마다 UI를 업데이트
         photoViewModel.photoData.observe(viewLifecycleOwner, Observer { photoList ->
             if (photoList != null) {
@@ -63,13 +76,13 @@ class ImageListFragment : Fragment() {
         })
     }
 
-    private fun moveDetailFragment() {
-        val fragmentTransaction = parentFragmentManager.beginTransaction()
-        val detailFragment = DetailFragment()
-        fragmentTransaction.replace(R.id.main_container, detailFragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
-    }
+//    private fun moveDetailFragment() {
+//        val fragmentTransaction = parentFragmentManager.beginTransaction()
+//        val detailFragment = DetailFragment()
+//        fragmentTransaction.replace(R.id.main_container, detailFragment)
+//        fragmentTransaction.addToBackStack(null)
+//        fragmentTransaction.commit()
+//    }
 
     private fun getPhotos(photoList: List<PhotoData>) {
         for (photo in photoList) {

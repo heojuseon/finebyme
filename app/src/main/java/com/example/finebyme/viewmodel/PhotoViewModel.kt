@@ -25,13 +25,19 @@ class PhotoViewModel: ViewModel() {
     //외부에서 데이터 수정 불가능
     val photoData: LiveData<List<PhotoData>> = _photoList
 
+
+    //리스트화면에서 상세화면으로 데이터를 전달할 viewmodel 생성(해당 포지션 값에 대한 이미지 데이터 전달)
     private val _selectedPosition = MutableLiveData<Int>()
     val selectedPosition: LiveData<Int> = _selectedPosition
 
+    private val _selectedPhoto = MutableLiveData<PhotoData>()
+    val selectedPhoto: LiveData<PhotoData> = _selectedPhoto
 
+    //어뎁터를 클릭했을때 해당 position 과 이미지 리스트를 담을 sendData 함수 생성
     fun sendData(position: Int, photoList: List<PhotoData>) {
         _selectedPosition.value = position
         _photoList.value = photoList
+        _selectedPhoto.value = photoList[position]
     }
 
     init {
@@ -40,60 +46,6 @@ class PhotoViewModel: ViewModel() {
 
 
     private fun photoScope() {
-        //        //생명주기를 인식하여 한전하게 코루틴 사용
-//        lifecycleScope.launch {
-//            try {
-//                val phoList = withContext(Dispatchers.IO){
-//                    PhotoRepository.unsplashApi.getPhotoList()
-//                }
-//                getPhotos(phoList)
-//
-//            } catch (e: Exception){
-//                e.printStackTrace()
-//                Toast.makeText(requireContext(), "Error fetching photos", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-
-        //response 함수 사용하지 않을경우
-//        CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                val phoList = withContext(Dispatchers.IO) {
-//                    PhotoRepository.unsplashApi.getPhotoList()
-//                }
-//                getPhotos(phoList)
-//
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                Toast.makeText(requireContext(), "Error fetching photos", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-
-               //response 함수 사용
-//        CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                val response = withContext(Dispatchers.IO) {
-//                    PhotoRepository.unsplashApi.getPhotoList()
-//                }
-//                if (response.isSuccessful) {    //응답 성공시
-//                    val photoList = response.body()
-//                    if (photoList != null) {
-//                        getPhotos(photoList)
-//                    } else {
-//                        withContext(Dispatchers.Main) {
-//                            Toast.makeText(requireContext(), "No photos found", Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//                } else {   //응답 실패시
-//                    withContext(Dispatchers.Main) {
-//                        Toast.makeText(requireContext(), "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                Toast.makeText(requireContext(), "Error fetching photos", Toast.LENGTH_SHORT).show()
-//            }
-//        }
 
         //viewModelScope(dependencies 추가)
         //ViewModelScope에는 Dispatchers.Main이 기본
