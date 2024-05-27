@@ -30,14 +30,10 @@ class PhotoViewModel: ViewModel() {
     private val _selectedPosition = MutableLiveData<Int>()
     val selectedPosition: LiveData<Int> = _selectedPosition
 
-    private val _selectedPhoto = MutableLiveData<PhotoData>()
-    val selectedPhoto: LiveData<PhotoData> = _selectedPhoto
-
     //어뎁터를 클릭했을때 해당 position 과 이미지 리스트를 담을 sendData 함수 생성
     fun sendData(position: Int, photoList: List<PhotoData>) {
         _selectedPosition.value = position
         _photoList.value = photoList
-        _selectedPhoto.value = photoList[position]
     }
 
     init {

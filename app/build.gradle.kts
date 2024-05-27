@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
 //    id("kotlin-kapt")   //room database_kapt 사용을 위해 추가
     id("com.google.devtools.ksp")   //kapt 에서 KSP 로 이전(Room DB)
+    id("kotlin-parcelize")
 }
 
 android {

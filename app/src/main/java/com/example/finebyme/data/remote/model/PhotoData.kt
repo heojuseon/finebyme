@@ -1,7 +1,10 @@
 package com.example.finebyme.data.remote.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class PhotoData(
     @SerializedName("id")
     val id: String,
@@ -39,12 +42,14 @@ data class PhotoData(
     val likes: Int
 
 
-) {
+): Parcelable
+{
     override fun toString(): String {
         return super.toString()
     }
 }
 
+@Parcelize
 data class Urls(
     @SerializedName("raw")
     val raw: String,
@@ -63,13 +68,13 @@ data class Urls(
 
     @SerializedName("small_s3")
     val small_s3: String
-)
+): Parcelable
 
+@Parcelize
 data class User(
     @SerializedName("username")
     val username: String,
 
     @SerializedName("name")
     val name: String
-)
-
+): Parcelable

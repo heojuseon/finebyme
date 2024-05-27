@@ -46,7 +46,7 @@ class ImageListFragment : Fragment() {
             override fun onPhotoClick(position: Int, photoList: List<PhotoData>) {
                 Toast.makeText(context, "photoId: ${photoList[position].id} + position: $position", Toast.LENGTH_SHORT).show()
 
-                //Fragment to Fragment
+//                //Fragment to Fragment
 //                //ViewModel을 통해 클릭된 이미지 리스트와 포지션 값 설정
 //                photoViewModel.sendData(position, photoList)
 //                moveDetailFragment()
@@ -54,8 +54,13 @@ class ImageListFragment : Fragment() {
                 //Fragment to Activity
                 photoViewModel.sendData(position, photoList)
                 val intent = Intent(context, PhotoDetailActivity::class.java)
-                context?.startActivity(intent)
-//                startActivity(Intent(requireContext(), PhotoDetailActivity::class.java))
+                startActivity(intent)
+//                photoViewModel.sendData(position, photoList)
+//                val intent = Intent(context, PhotoDetailActivity::class.java).apply {
+//                    putParcelableArrayListExtra("photoList", ArrayList(photoList))
+//                    putExtra("position", position)
+//                }
+//                context?.startActivity(intent)
             }
         })
 
@@ -76,13 +81,13 @@ class ImageListFragment : Fragment() {
         })
     }
 
-//    private fun moveDetailFragment() {
-//        val fragmentTransaction = parentFragmentManager.beginTransaction()
-//        val detailFragment = DetailFragment()
-//        fragmentTransaction.replace(R.id.main_container, detailFragment)
-//        fragmentTransaction.addToBackStack(null)
-//        fragmentTransaction.commit()
-//    }
+    private fun moveDetailFragment() {
+        val fragmentTransaction = parentFragmentManager.beginTransaction()
+        val detailFragment = DetailFragment()
+        fragmentTransaction.replace(R.id.main_container, detailFragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
 
     private fun getPhotos(photoList: List<PhotoData>) {
         for (photo in photoList) {
