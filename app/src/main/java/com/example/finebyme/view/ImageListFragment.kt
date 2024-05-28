@@ -52,24 +52,18 @@ class ImageListFragment : Fragment() {
 //                moveDetailFragment()
 
                 //Fragment to Activity
-                photoViewModel.sendData(position, photoList)
                 val intent = Intent(context, PhotoDetailActivity::class.java)
-                startActivity(intent)
-//                photoViewModel.sendData(position, photoList)
-//                val intent = Intent(context, PhotoDetailActivity::class.java).apply {
-//                    putParcelableArrayListExtra("photoList", ArrayList(photoList))
-//                    putExtra("position", position)
-//                }
-//                context?.startActivity(intent)
+                val selectedImage = photoList[position]
+                intent.putExtra("position", position)
+                intent.putExtra("photoList", selectedImage)
+                startActivity(intent)   // 추후 registerForActivityResult() 사용 생각
             }
         })
 
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        //Fragment to Fragment
-//        photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
-        photoViewModel = ViewModelProvider(this)[PhotoViewModel::class.java]
+        photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
         //viewModel 의 photoData 관찰하여 데이터가 변경될 때마다 UI를 업데이트
         photoViewModel.photoData.observe(viewLifecycleOwner, Observer { photoList ->
             if (photoList != null) {
@@ -81,6 +75,7 @@ class ImageListFragment : Fragment() {
         })
     }
 
+    //Fragment to Fragment
     private fun moveDetailFragment() {
         val fragmentTransaction = parentFragmentManager.beginTransaction()
         val detailFragment = DetailFragment()

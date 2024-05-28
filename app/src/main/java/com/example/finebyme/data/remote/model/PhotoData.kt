@@ -43,11 +43,6 @@ data class PhotoData(
 
 
 ): Parcelable
-{
-    override fun toString(): String {
-        return super.toString()
-    }
-}
 
 @Parcelize
 data class Urls(
