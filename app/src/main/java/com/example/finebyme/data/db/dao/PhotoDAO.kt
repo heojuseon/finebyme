@@ -9,8 +9,8 @@ import com.example.finebyme.data.db.entity.Photo
 interface PhotoDAO {    //데이터베이스에 접근하여 수행할 작업을 메서드 형태로 정의
 
     @Insert
-    fun insert(photo: Photo)
+    suspend fun insert(photo: Photo)
 
     @Query("select * from photos order by id desc")
-    fun getAll(): List<Photo>
+    suspend fun getAll(): List<Photo>
 }

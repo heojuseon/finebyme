@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PhotoDetailActivity">
+    tools:context=".view.PhotoDetailActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/detail_card"
@@ -23,6 +23,7 @@
     </androidx.cardview.widget.CardView>
 
     <ToggleButton
+        android:id="@+id/photo_like"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:textOn=""

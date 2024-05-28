@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         // setContentView 전에 작성해야 한다.
         installSplashScreen()
 
+        setContentView(view)
 
         setBottomNavigationView()
 
@@ -25,7 +26,6 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavView.selectedItemId = R.id.fragment_image_list
         }
 
-        setContentView(view)
     }
 
     private fun setBottomNavigationView() {

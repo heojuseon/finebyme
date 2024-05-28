@@ -15,7 +15,7 @@
         android:theme="@style/Theme.FineByMe"
         tools:targetApi="31">
         <activity
-            android:name=".PhotoDetailActivity"
+            android:name=".view.PhotoDetailActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

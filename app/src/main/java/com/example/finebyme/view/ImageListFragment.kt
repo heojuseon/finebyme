@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.finebyme.PhotoDetailActivity
 import com.example.finebyme.R
 import com.example.finebyme.adapter.PhotoAdapter
 import com.example.finebyme.adapter.PhotoAdapter.OnPhotoItemClickListener

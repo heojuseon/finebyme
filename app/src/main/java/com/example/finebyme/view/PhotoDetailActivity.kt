@@ -1,34 +1,34 @@
-package com.example.finebyme
+package com.example.finebyme.view
 
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.finebyme.databinding.ActivityPhotoDetailBinding
-import com.example.finebyme.view.PhotoDetailFragment
-import com.example.finebyme.viewmodel.PhotoViewModel
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.example.finebyme.data.db.entity.Photo
+import com.example.finebyme.data.db.repository.PhotoRoomRepository
 import com.example.finebyme.data.remote.model.PhotoData
+import com.example.finebyme.viewmodel.PhotoRoomViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PhotoDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoDetailBinding
-    private lateinit var photoViewModel: PhotoViewModel
+    private lateinit var photoRoomViewModel: PhotoRoomViewModel
+//    private lateinit var roomRepository: PhotoRoomRepository
+
+    private var likeOn: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPhotoDetailBinding.inflate(layoutInflater)
         val view = binding.root
-
-        initView()
-
         setContentView(view)
-    }
 
-    private fun initView() {
         val position = intent.getIntExtra("position", -1)   //추후 DB 작업 진행
 //        val selectedImage: PhotoData? = intent.getParcelableExtra("photoList")    //deprecated
         val selectedImage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -36,6 +36,15 @@ class PhotoDetailActivity : AppCompatActivity() {
         } else {
             intent.getParcelableExtra("photoList")
         }
+
+//        // Repository 인스턴스 생성
+//        roomRepository = PhotoRoomRepository(application)
+
+        initView(position, selectedImage)
+
+    }
+
+    private fun initView(position: Int, selectedImage: PhotoData?) {
 
         if (selectedImage != null) {
             Log.d("detail_data: ", selectedImage.id)
@@ -54,5 +63,29 @@ class PhotoDetailActivity : AppCompatActivity() {
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.photoDetailImageview)
         }
+
+        binding.photoLike.isChecked = likeOn
+        binding.photoLike.setOnCheckedChangeListener { buttonView, isChecked ->
+            likeOn = isChecked
+            Toast.makeText(this, "Checked is: $isChecked", Toast.LENGTH_SHORT).show()
+            if (isChecked){
+                // 삽입할 Photo 객체 생성
+                val photo = selectedImage?.let {
+                    Photo(
+                        width = selectedImage.width,
+                        height = selectedImage.height,
+                        description = selectedImage.description,
+                        altDescription = selectedImage.altDescription,
+                        url = selectedImage.urls.regular
+                    )
+                }
+                lifecycleScope.launch {
+                    if (photo != null) {
+                        photoRoomViewModel.insert(photo)
+                    }
+                }
+            }
+        }
     }
+
 }
