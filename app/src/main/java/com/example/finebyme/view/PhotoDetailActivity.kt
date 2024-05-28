@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.finebyme.databinding.ActivityPhotoDetailBinding
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ import com.example.finebyme.data.db.entity.Photo
 import com.example.finebyme.data.db.repository.PhotoRoomRepository
 import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.viewmodel.PhotoRoomViewModel
+import com.example.finebyme.viewmodel.PhotoRoomViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,7 +22,6 @@ import kotlinx.coroutines.withContext
 class PhotoDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoDetailBinding
     private lateinit var photoRoomViewModel: PhotoRoomViewModel
-//    private lateinit var roomRepository: PhotoRoomRepository
 
     private var likeOn: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,9 +38,8 @@ class PhotoDetailActivity : AppCompatActivity() {
             intent.getParcelableExtra("photoList")
         }
 
-//        // Repository 인스턴스 생성
-//        roomRepository = PhotoRoomRepository(application)
-
+        //viewmodel 초기화
+        photoRoomViewModel = ViewModelProvider(this, PhotoRoomViewModelFactory(PhotoRoomRepository(application)))[PhotoRoomViewModel::class.java]
         initView(position, selectedImage)
 
     }
@@ -79,10 +79,8 @@ class PhotoDetailActivity : AppCompatActivity() {
                         url = selectedImage.urls.regular
                     )
                 }
-                lifecycleScope.launch {
-                    if (photo != null) {
-                        photoRoomViewModel.insert(photo)
-                    }
+                if (photo != null) {
+                    photoRoomViewModel.insert(photo)
                 }
             }
         }
