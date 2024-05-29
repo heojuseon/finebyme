@@ -72,6 +72,7 @@ class PhotoDetailActivity : AppCompatActivity() {
                 // 삽입할 Photo 객체 생성
                 val photo = selectedImage?.let {
                     Photo(
+                        id = selectedImage.id,
                         width = selectedImage.width,
                         height = selectedImage.height,
                         description = selectedImage.description,

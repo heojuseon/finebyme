@@ -1,60 +1,61 @@
 package com.example.finebyme.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.finebyme.R
+import com.example.finebyme.adapter.PhotoAdapter
+import com.example.finebyme.data.db.entity.Photo
+import com.example.finebyme.data.db.repository.PhotoRoomRepository
+import com.example.finebyme.databinding.FragmentFavoriteImgBinding
+import com.example.finebyme.viewmodel.PhotoRoomViewModel
+import com.example.finebyme.viewmodel.PhotoRoomViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FavoriteImgFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FavoriteImgFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var binding: FragmentFavoriteImgBinding
+    private lateinit var photoRoomViewModel: PhotoRoomViewModel
+    private val adapter = PhotoAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_img, container, false)
+    ): View {
+        binding = FragmentFavoriteImgBinding.inflate(inflater)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FavoriteImgFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FavoriteImgFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //viewmodel 초기화
+        photoRoomViewModel = ViewModelProvider(this, PhotoRoomViewModelFactory(PhotoRoomRepository(requireActivity().application)))[PhotoRoomViewModel::class.java]
+        initFavoritePhoto()
+    }
+
+    private fun initFavoritePhoto() {
+        binding.favoriteRecyclerview.adapter = adapter
+        binding.favoriteRecyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
+        photoRoomViewModel.getAll().observe(requireActivity(), Observer { favoriteList ->
+            if (favoriteList != null){
+                getFavorite(favoriteList)
+//                adapter.addFavItem(favoriteList)
             }
+        })
+    }
+
+    private fun getFavorite(favoriteList: List<Photo>) {
+        for (favorite in favoriteList){
+            Log.d("favorite_id: ", favorite.id)
+            Log.d("favorite_width: ", favorite.width.toString())
+            Log.d("favorite_height: ", favorite.height.toString())
+            Log.d("favorite_description: ", favorite.description.toString())
+            Log.d("favorite_altDescription: ", favorite.altDescription.toString())
+            Log.d("favorite_url: ", favorite.url)
+        }
     }
 }

@@ -6,8 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "photos")   //데이터 베이스의 테이블 행 역할
 data class Photo(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+//    @PrimaryKey(autoGenerate = true)
+//    val id: Int = 0,
+    @PrimaryKey
+    val id: String,
 
     @ColumnInfo(name = "width")
     val width: Int,
