@@ -1,47 +1,41 @@
-package com.example.finebyme.data.remote.model
+package com.example.finebyme.data.db.entity
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Entity(tableName = "photos")   //데이터 베이스의 테이블 행 역할
 data class PhotoData(
     @SerializedName("id")
+    @PrimaryKey
     val id: String,
 
-    @SerializedName("created_at")
-    val createdAt: String,
-
-    @SerializedName("updated_at")
-    val updatedAt: String,
-
     @SerializedName("width")
+    @ColumnInfo(name = "width")
     val width: Int,
 
     @SerializedName("height")
+    @ColumnInfo(name = "height")
     val height: Int,
-
-    @SerializedName("color")
-    val color: String,
 
     //json 데이터에 null 값이 종종 있음
     @SerializedName("description")
+    @ColumnInfo(name = "description")
     val description: String?,
 
     //json 데이터에 null 값이 종종 있음
     @SerializedName("alt_description")
+    @ColumnInfo(name = "altDescription")
     val altDescription: String?,
 
-    @SerializedName("user")
-    val user: User,
 
     @SerializedName("urls")
-    val urls: Urls,
-
-    @SerializedName("likes")
-    val likes: Int
-
-
+    @ColumnInfo(name = "url")
+    val urls: Urls
 ): Parcelable
 
 @Parcelize
@@ -63,13 +57,4 @@ data class Urls(
 
     @SerializedName("small_s3")
     val small_s3: String
-): Parcelable
-
-@Parcelize
-data class User(
-    @SerializedName("username")
-    val username: String,
-
-    @SerializedName("name")
-    val name: String
 ): Parcelable

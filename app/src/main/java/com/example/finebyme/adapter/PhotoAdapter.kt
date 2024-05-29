@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.finebyme.data.remote.model.PhotoData
+import com.example.finebyme.data.db.entity.PhotoData
 import com.example.finebyme.databinding.ItemPhotoBinding
 
 class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {

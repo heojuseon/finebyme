@@ -1,7 +1,7 @@
 package com.example.finebyme.data.remote.api
 
 import com.example.finebyme.BuildConfig
-import com.example.finebyme.data.remote.model.PhotoData
+import com.example.finebyme.data.db.entity.PhotoData
 import retrofit2.Response
 import retrofit2.http.GET
 

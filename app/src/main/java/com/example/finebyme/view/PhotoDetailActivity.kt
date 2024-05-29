@@ -6,18 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.finebyme.databinding.ActivityPhotoDetailBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.finebyme.data.db.entity.Photo
 import com.example.finebyme.data.db.repository.PhotoRoomRepository
-import com.example.finebyme.data.remote.model.PhotoData
+import com.example.finebyme.data.db.entity.PhotoData
 import com.example.finebyme.viewmodel.PhotoRoomViewModel
 import com.example.finebyme.viewmodel.PhotoRoomViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PhotoDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoDetailBinding

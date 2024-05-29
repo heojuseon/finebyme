@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.finebyme.adapter.PhotoAdapter
-import com.example.finebyme.data.remote.model.PhotoData
+import com.example.finebyme.data.db.entity.PhotoData
 import com.example.finebyme.databinding.FragmentDetailBinding
 import com.example.finebyme.viewmodel.PhotoViewModel
 
@@ -48,11 +48,11 @@ class DetailFragment : Fragment() {
 
     private fun getDetailPhotos(selectedImage: PhotoData) {
         Log.d("photo_detail_id: ", selectedImage.id)
-        Log.d("photo_detail_createdAt: ", selectedImage.createdAt)
+//        Log.d("photo_detail_createdAt: ", selectedImage.createdAt)
         Log.d("photo_detail_altDescription: ", selectedImage.altDescription.toString())
         Log.d("photo_detail_description: ", selectedImage.description.toString())
         Log.d("photo_detail_urls: ", selectedImage.urls.regular)
-        Log.d("photo_detail_color: ", selectedImage.color)
+//        Log.d("photo_detail_color: ", selectedImage.color)
 
         binding.detailTitle.text = selectedImage.altDescription
         if (selectedImage.description != null){
