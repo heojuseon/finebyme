@@ -14,5 +14,5 @@ interface PhotoDAO {    //데이터베이스에 접근하여 수행할 작업을
     suspend fun insert(photo: Photo)
 
     @Query("select * from photos order by id desc")
-    fun getAll(): LiveData<List<Photo>>
+    fun getAll(): List<Photo>
 }

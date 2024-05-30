@@ -26,7 +26,11 @@ abstract class PhotoDatabase : RoomDatabase() {
                         context.applicationContext,
                         PhotoDatabase::class.java,
                         "photo.db"
-                    ).build()
+                    )
+                        //Main Thread에서 DB에 입출력을 가능하게 함 -> 없을 경우 FavoriteFragment 에서 이미지 못가져옴
+                        //error : Cannot access database on the main thread since it may potentially lock the UI for a long period of time.
+                        .allowMainThreadQueries()
+                        .build()
                 }
             }
             return Instance

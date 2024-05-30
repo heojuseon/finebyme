@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.finebyme.data.db.entity.Photo
 import com.example.finebyme.data.db.repository.PhotoRoomRepository
-import com.example.finebyme.data.db.entity.PhotoData
+import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.viewmodel.PhotoRoomViewModel
 import com.example.finebyme.viewmodel.PhotoRoomViewModelFactory
 

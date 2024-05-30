@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.finebyme.R
 import com.example.finebyme.adapter.PhotoAdapter
 import com.example.finebyme.adapter.PhotoAdapter.OnPhotoItemClickListener
-import com.example.finebyme.data.db.entity.PhotoData
+import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.databinding.FragmentImageListBinding
 import com.example.finebyme.viewmodel.PhotoViewModel
 

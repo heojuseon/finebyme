@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.finebyme.data.db.entity.PhotoData
+import com.example.finebyme.data.db.entity.Photo
+import com.example.finebyme.data.remote.model.PhotoData
+import com.example.finebyme.data.remote.model.Urls
 import com.example.finebyme.databinding.ItemPhotoBinding
 
 class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
@@ -43,6 +45,22 @@ class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
         photos = photoList
         notifyDataSetChanged()
     }
+
+
+    //mapping 작업
+//    fun addFavItem(favoriteList: List<Photo>) {
+//        val convert = favoriteList.map {
+//            PhotoData(
+//                id = it.id,
+//                width = it.width,
+//                height = it.height,
+//                description = it.description,
+//                altDescription = it.altDescription,
+//                urls = Urls(regular = it.url, full = it.url)
+//            )
+//        }
+//        addItem(convert)
+//    }
 
 
     inner class Holder(private val binding: ItemPhotoBinding): RecyclerView.ViewHolder(binding.root) {

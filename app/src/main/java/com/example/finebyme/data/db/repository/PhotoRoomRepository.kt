@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 class PhotoRoomRepository(application: Application) {
     private val photoDAO: PhotoDAO
-    private val photoList: LiveData<List<Photo>>
+    private val photoList: List<Photo>
     //초기화
     init {
         val db = PhotoDatabase.getInstance(application)!!
@@ -24,7 +24,7 @@ class PhotoRoomRepository(application: Application) {
         }
     }
 
-    fun getAllPhoto(): LiveData<List<Photo>>{
+    fun getAllPhoto(): List<Photo>{
         return photoDAO.getAll()
     }
 }
