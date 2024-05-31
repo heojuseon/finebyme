@@ -49,6 +49,7 @@ class FavoriteImgFragment : Fragment() {
                 val selectedImage = photoList[position]
                 intent.putExtra("position", position)
                 intent.putExtra("photoList", selectedImage)
+                intent.putExtra("fromFavoriteImgFragment", true)
                 startActivity(intent)   // 추후 registerForActivityResult() 사용 생각
             }
         })

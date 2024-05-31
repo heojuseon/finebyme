@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.finebyme.databinding.ActivityPhotoDetailBinding
 import com.bumptech.glide.Glide
@@ -19,7 +20,7 @@ class PhotoDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoDetailBinding
     private lateinit var photoRoomViewModel: PhotoRoomViewModel
 
-    private var likeOn: Boolean = false
+        private var isFavorite: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPhotoDetailBinding.inflate(layoutInflater)
@@ -33,21 +34,43 @@ class PhotoDetailActivity : AppCompatActivity() {
         } else {
             intent.getParcelableExtra("photoList")
         }
+//         var isFavorite = intent.getBooleanExtra("fromFavoriteImgFragment", false)
+        isFavorite = intent.getBooleanExtra("fromFavoriteImgFragment", false)
 
         //viewmodel 초기화
-        photoRoomViewModel = ViewModelProvider(this, PhotoRoomViewModelFactory(PhotoRoomRepository(application)))[PhotoRoomViewModel::class.java]
-        initView(position, selectedImage)
+        photoRoomViewModel = ViewModelProvider(
+            this,
+            PhotoRoomViewModelFactory(PhotoRoomRepository(application))
+        )[PhotoRoomViewModel::class.java]
 
+        if (selectedImage != null) {
+            photoRoomViewModel.photoData.observe(this, Observer { photoList ->
+                if (photoList != null) {
+                    for (data in photoList) {
+                        Log.d("data_id: ", data.id)
+                        if (data.id == selectedImage.id){
+                            isFavorite = true
+                            break
+                        }
+                    }
+                }
+                initView(position, selectedImage, isFavorite)
+            })
+        }
+
+
+//        initView(position, selectedImage, isFavorite)
+//        initView(position, selectedImage)
     }
 
-    private fun initView(position: Int, selectedImage: PhotoData?) {
+    private fun initView(position: Int, selectedImage: PhotoData?, isFavorite: Boolean) {
 
         if (selectedImage != null) {
             Log.d("detail_data: ", selectedImage.id)
             binding.detailTitle.text = selectedImage.altDescription
-            if (selectedImage.description != null){
+            if (selectedImage.description != null) {
                 binding.detailDescription.text = selectedImage.description
-            }else{
+            } else {
                 binding.detailDescription.text = "null"
             }
             binding.detailWidth.text = "width: ${selectedImage.width}"
@@ -60,11 +83,11 @@ class PhotoDetailActivity : AppCompatActivity() {
                 .into(binding.photoDetailImageview)
         }
 
-        binding.photoLike.isChecked = likeOn
+        binding.photoLike.isChecked = isFavorite
         binding.photoLike.setOnCheckedChangeListener { buttonView, isChecked ->
-            likeOn = isChecked
+//            isFavorite = isChecked
             Toast.makeText(this, "Checked is: $isChecked", Toast.LENGTH_SHORT).show()
-            if (isChecked){
+            if (isChecked) {
                 // 삽입할 Photo 객체 생성
                 val photo = selectedImage?.let {
                     Photo(

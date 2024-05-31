@@ -15,4 +15,8 @@ interface PhotoDAO {    //데이터베이스에 접근하여 수행할 작업을
 
     @Query("select * from photos order by id desc")
     fun getAll(): List<Photo>
+
+    // count 가 1일 경우 0일 경우 true / false
+//    @Query("select count(*) from photos where id = :photoId")
+//    fun isFavorite(photoId: String): Int
 }
