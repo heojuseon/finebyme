@@ -13,14 +13,17 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.finebyme.data.db.entity.Photo
 import com.example.finebyme.data.db.repository.PhotoRoomRepository
 import com.example.finebyme.data.remote.model.PhotoData
+import com.example.finebyme.viewmodel.PhotoFavoriteViewModel
+import com.example.finebyme.viewmodel.PhotoFavoriteViewModelFactory
 import com.example.finebyme.viewmodel.PhotoRoomViewModel
 import com.example.finebyme.viewmodel.PhotoRoomViewModelFactory
 
 class PhotoDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoDetailBinding
-    private lateinit var photoRoomViewModel: PhotoRoomViewModel
+//    private lateinit var photoRoomViewModel: PhotoRoomViewModel
+    private lateinit var photoFavoriteViewModel: PhotoFavoriteViewModel
 
-        private var isFavorite: Boolean = false
+//    private var isFavorite: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPhotoDetailBinding.inflate(layoutInflater)
@@ -34,40 +37,24 @@ class PhotoDetailActivity : AppCompatActivity() {
         } else {
             intent.getParcelableExtra("photoList")
         }
-//         var isFavorite = intent.getBooleanExtra("fromFavoriteImgFragment", false)
-        isFavorite = intent.getBooleanExtra("fromFavoriteImgFragment", false)
+       val isFavorite = intent.getBooleanExtra("fromFavoriteImgFragment", false)
 
         //viewmodel 초기화
-        photoRoomViewModel = ViewModelProvider(
+        photoFavoriteViewModel = ViewModelProvider(
             this,
-            PhotoRoomViewModelFactory(PhotoRoomRepository(application))
-        )[PhotoRoomViewModel::class.java]
+            PhotoFavoriteViewModelFactory(PhotoRoomRepository(application))
+        )[PhotoFavoriteViewModel::class.java]
 
-//        if (selectedImage != null) {
-//            photoRoomViewModel.photoData.observe(this, Observer { photoList ->
-//                if (photoList != null) {
-//                    for (data in photoList) {
-//                        Log.d("data_id: ", data.id)
-//                        if (data.id == selectedImage.id){
-//                            isFavorite = true
-//                            break
-//                        }
-//                    }
-//                }
-//                initView(position, selectedImage, isFavorite)
-//            })
-//        }
-
-        if (selectedImage != null){
-            photoRoomViewModel.isFavorite(selectedImage.id)
-            photoRoomViewModel.isfavorite.observe(this, Observer { isFavorite ->
-                initView(position, selectedImage, isFavorite)
-            })
+        selectedImage?.let {
+            photoFavoriteViewModel.onCreateViewModel(selectedImage, isFavorite)
         }
 
 
-//        initView(position, selectedImage, isFavorite)
-//        initView(position, selectedImage)
+        photoFavoriteViewModel.isFavorite.observe(this, Observer {
+            Log.d("isFavorite: ", it.toString())
+            initView(position, selectedImage, it)
+        })
+
     }
 
     private fun initView(position: Int, selectedImage: PhotoData?, isFavorite: Boolean) {
@@ -92,23 +79,8 @@ class PhotoDetailActivity : AppCompatActivity() {
 
         binding.photoLike.isChecked = isFavorite
         binding.photoLike.setOnCheckedChangeListener { buttonView, isChecked ->
-//            isFavorite = isChecked
-            Toast.makeText(this, "Checked is: $isChecked", Toast.LENGTH_SHORT).show()
-            if (isChecked) {
-                // 삽입할 Photo 객체 생성
-                val photo = selectedImage?.let {
-                    Photo(
-                        id = selectedImage.id,
-                        width = selectedImage.width,
-                        height = selectedImage.height,
-                        description = selectedImage.description,
-                        altDescription = selectedImage.altDescription,
-                        url = selectedImage.urls.regular
-                    )
-                }
-                if (photo != null) {
-                    photoRoomViewModel.insert(photo)
-                }
+            if (selectedImage != null) {
+                photoFavoriteViewModel.isFavoriteCheck(selectedImage, isChecked)
             }
         }
     }

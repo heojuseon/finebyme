@@ -16,29 +16,16 @@ class PhotoRoomViewModel(private val roomRepository: PhotoRoomRepository): ViewM
     private val _photoList = MutableLiveData<List<PhotoData>>()
     val photoData: LiveData<List<PhotoData>> = _photoList
 
-    private val _isfavorite = MutableLiveData<Boolean>()
-    val isfavorite: LiveData<Boolean> = _isfavorite
 
     init {
         //FavoriteImgFragment 에서 호출하지 않고 바로 viewmodel 생성될때 호출
         getAll()
     }
 
-    fun insert(photo: Photo) {
-        viewModelScope.launch {
-            roomRepository.insertPhoto(photo)
-        }
-    }
-
     private fun getAll() {
         _photoList.value = roomRepository.getAllPhoto().map {
             PhotoMapper.convertPhotoData(it)
         }
-    }
-
-    fun isFavorite(photoId: String) {
-        val count = roomRepository.isFavorite(photoId)
-        _isfavorite.value = count > 0
     }
 
 }
