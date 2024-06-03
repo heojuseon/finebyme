@@ -20,10 +20,8 @@ import com.example.finebyme.viewmodel.PhotoRoomViewModelFactory
 
 class PhotoDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoDetailBinding
-//    private lateinit var photoRoomViewModel: PhotoRoomViewModel
     private lateinit var photoFavoriteViewModel: PhotoFavoriteViewModel
 
-//    private var isFavorite: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPhotoDetailBinding.inflate(layoutInflater)

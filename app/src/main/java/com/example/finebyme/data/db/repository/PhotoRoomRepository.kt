@@ -31,4 +31,10 @@ class PhotoRoomRepository(application: Application) {
     fun isFavorite(photoId: String): Int{
         return photoDAO.isFavorite(photoId)
     }
+
+    suspend fun deletePhoto(potoId: String){
+        withContext(Dispatchers.IO){
+            photoDAO.deletePhoto(potoId)
+        }
+    }
 }

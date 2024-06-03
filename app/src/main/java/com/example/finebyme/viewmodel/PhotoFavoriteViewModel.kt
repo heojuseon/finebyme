@@ -50,6 +50,13 @@ class PhotoFavoriteViewModel(private val roomRepository: PhotoRoomRepository) : 
             }
         } else {
             // 즐겨찾기 해제
+            deletePhoto(selectedImage.id)
+        }
+    }
+
+    private fun deletePhoto(photoId: String) {
+        viewModelScope.launch {
+            roomRepository.deletePhoto(photoId)
         }
     }
 
