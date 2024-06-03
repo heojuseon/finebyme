@@ -27,4 +27,8 @@ class PhotoRoomRepository(application: Application) {
     fun getAllPhoto(): List<Photo>{
         return photoDAO.getAll()
     }
+
+    fun isFavorite(photoId: String): Int{
+        return photoDAO.isFavorite(photoId)
+    }
 }

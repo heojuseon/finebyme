@@ -43,17 +43,24 @@ class PhotoDetailActivity : AppCompatActivity() {
             PhotoRoomViewModelFactory(PhotoRoomRepository(application))
         )[PhotoRoomViewModel::class.java]
 
-        if (selectedImage != null) {
-            photoRoomViewModel.photoData.observe(this, Observer { photoList ->
-                if (photoList != null) {
-                    for (data in photoList) {
-                        Log.d("data_id: ", data.id)
-                        if (data.id == selectedImage.id){
-                            isFavorite = true
-                            break
-                        }
-                    }
-                }
+//        if (selectedImage != null) {
+//            photoRoomViewModel.photoData.observe(this, Observer { photoList ->
+//                if (photoList != null) {
+//                    for (data in photoList) {
+//                        Log.d("data_id: ", data.id)
+//                        if (data.id == selectedImage.id){
+//                            isFavorite = true
+//                            break
+//                        }
+//                    }
+//                }
+//                initView(position, selectedImage, isFavorite)
+//            })
+//        }
+
+        if (selectedImage != null){
+            photoRoomViewModel.isFavorite(selectedImage.id)
+            photoRoomViewModel.isfavorite.observe(this, Observer { isFavorite ->
                 initView(position, selectedImage, isFavorite)
             })
         }
