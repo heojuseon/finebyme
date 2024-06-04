@@ -8,7 +8,11 @@ import androidx.room.PrimaryKey
 data class Photo(
 //    @PrimaryKey(autoGenerate = true)
 //    val id: Int = 0,
-    @PrimaryKey
+
+    @PrimaryKey(autoGenerate = true)
+    val autoId: Int = 0,
+
+    @ColumnInfo(name = "id")
     val id: String,
 
     @ColumnInfo(name = "width")

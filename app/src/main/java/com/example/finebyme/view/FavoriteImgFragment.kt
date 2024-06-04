@@ -1,5 +1,6 @@
 package com.example.finebyme.view
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,6 +21,7 @@ import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.databinding.FragmentFavoriteImgBinding
 import com.example.finebyme.viewmodel.PhotoRoomViewModel
 import com.example.finebyme.viewmodel.PhotoRoomViewModelFactory
+import kotlinx.coroutines.Dispatchers.Main
 
 class FavoriteImgFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteImgBinding
@@ -50,7 +53,8 @@ class FavoriteImgFragment : Fragment() {
                 intent.putExtra("position", position)
                 intent.putExtra("photoList", selectedImage)
                 intent.putExtra("fromFavoriteImgFragment", true)
-                startActivity(intent)   // 추후 registerForActivityResult() 사용 생각
+//                startActivity(intent)   // 추후 registerForActivityResult() 사용 생각
+                favoritePositionLauncher.launch(intent)
             }
         })
         binding.favoriteRecyclerview.adapter = adapter
@@ -71,6 +75,17 @@ class FavoriteImgFragment : Fragment() {
             Log.d("favorite_description: ", favorite.description.toString())
             Log.d("favorite_altDescription: ", favorite.altDescription.toString())
             Log.d("favorite_url: ", favorite.urls.regular)
+        }
+    }
+
+    val favoritePositionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        Log.d("@!@", "result.resultCode : ${result.resultCode}")
+        if (result.resultCode == RESULT_OK){
+            val resultPosition = result.data?.getIntExtra("result_position", -1)
+            Log.d("Favorite_result: ", resultPosition.toString())
+            if (resultPosition != null) {
+                adapter.removeItem(resultPosition)
+            }
         }
     }
 }

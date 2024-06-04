@@ -1,6 +1,5 @@
 package com.example.finebyme.viewmodel
 
-import android.provider.SyncStateContract.Helpers.insert
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -34,10 +33,14 @@ class PhotoFavoriteViewModel(private val roomRepository: PhotoRoomRepository) : 
         return roomRepository.isFavorite(photoId) > 0
     }
 
-
-    fun isFavoriteCheck(selectedImage: PhotoData, isChecked: Boolean) {
-        if (isChecked) {
-            selectedImage.let {
+    fun tapPhotoLike(){
+        if (_isFavorite.value == true) {
+            _photo.value?.let {
+                deletePhoto(it.id)
+                _isFavorite.value = false
+            }
+        } else {
+            _photo.value?.let {
                 val photo = Photo(
                     id = it.id,
                     width = it.width,
@@ -47,10 +50,8 @@ class PhotoFavoriteViewModel(private val roomRepository: PhotoRoomRepository) : 
                     url = it.urls.regular
                 )
                 insertPhoto(photo)
+                _isFavorite.value = true
             }
-        } else {
-            // 즐겨찾기 해제
-            deletePhoto(selectedImage.id)
         }
     }
 

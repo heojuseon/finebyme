@@ -1,5 +1,6 @@
 package com.example.finebyme.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,8 @@ import com.example.finebyme.data.remote.model.Urls
 import com.example.finebyme.databinding.ItemPhotoBinding
 
 class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
-    private var photos: List<PhotoData> = emptyList()   //비어있는 불변 리스트 생성
+//    private var photos: List<PhotoData> = emptyList()   //비어있는 불변 리스트 생성
+    private var photos: MutableList<PhotoData> = arrayListOf()   //비어있는 불변 리스트 생성
 
     //클릭 인터페이스 정의
     interface OnPhotoItemClickListener{
@@ -42,8 +44,16 @@ class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
     }
 
     fun addItem(photoList: List<PhotoData>) {
-        photos = photoList
+//        photos = photoList
+        photos = photoList.toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun removeItem(resultPosition: Int) {
+        Log.d("@!@", "removeItem 1 : ${photos.size}")
+        photos.removeAt(resultPosition)
+        notifyItemRemoved(resultPosition)
+        Log.d("@!@", "removeItem 2 : ${photos.size}")
     }
 
 
