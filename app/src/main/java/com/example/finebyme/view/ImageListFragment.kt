@@ -2,10 +2,13 @@ package com.example.finebyme.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -29,13 +32,47 @@ class ImageListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentImageListBinding.inflate(inflater)
+        Log.d("!!!!!!!", "onCreateView")
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("!!!!!!!", "onViewCreated")
 
+        photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
+
+        editListener()
         initPhoto()
+    }
+
+    private fun editListener() {
+//        binding.searchImg.setOnEditorActionListener { textView, actionId, event ->
+//            var handled = false
+//            if (actionId == EditorInfo.IME_ACTION_DONE){
+//                val query = textView.text.toString()
+//                Toast.makeText(requireContext(), "$query: 검색 됨 ", Toast.LENGTH_SHORT).show()
+//                photoViewModel.searchImg(query)
+//                handled = true
+//            }
+//            handled
+//        }
+
+        binding.searchImg.setText(photoViewModel.query.value.toString())
+        binding.searchImg.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //텍스트가 바뀌기 전 이벤트
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //텍스트가 바뀌었을 때 이벤트
+                val query = s.toString()
+                Log.d("!!!!!!!", "onTextChanged: $query")
+                photoViewModel.searchImg(query)
+            }
+            override fun afterTextChanged(s: Editable?) {
+                //텍스트가 바뀌고 난 뒤 이벤트
+            }
+        })
 
     }
 
@@ -62,7 +99,6 @@ class ImageListFragment : Fragment() {
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
         //viewModel 의 photoData 관찰하여 데이터가 변경될 때마다 UI를 업데이트
         photoViewModel.photoData.observe(viewLifecycleOwner, Observer { photoList ->
             if (photoList != null) {

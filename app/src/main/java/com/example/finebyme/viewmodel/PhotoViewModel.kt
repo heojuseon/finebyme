@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide.init
 import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.data.remote.repository.PhotoRepository
 import kotlinx.coroutines.Dispatchers
@@ -36,8 +37,36 @@ class PhotoViewModel: ViewModel() {
         _photoList.value = photoList
     }
 
+    private val _query = MutableLiveData<String>("")
+    val query: LiveData<String> = _query
+    fun searchImg(query: String) {
+        _query.value = query
+        searchScope(query)
+    }
+
     init {
         photoScope()
+    }
+
+    private fun searchScope(query: String) {
+        viewModelScope.launch {
+            try {
+                //withContext : 네트워크 요청을 백그라운드 스레드에서 수행 -> 네트워크 요청과 같은 I/O 작업을 메인 스레드가 아닌 다른 스레드에서 실행
+                val response = withContext(Dispatchers.IO) {
+                    PhotoRepository.unsplashApi.getSearchPhoto(query)
+                }
+                if (response.isSuccessful) {    //응답 성공시
+                    _photoList.postValue(response.body())
+                } else {   //응답 실패시
+                    withContext(Dispatchers.Main) {
+                        Log.d("error: ", "error")
+                    }
+                }
+
+            } catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
     }
 
 
