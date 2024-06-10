@@ -39,6 +39,8 @@ class FavoriteImgFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //viewmodel 초기화
+        //requireActivity -> requireActivity 사용하게되면 최상위 액티비티인 MainActivity 의 viewmodel 인스턴스를 공유하게 되면서 Activity의 전체 생명주기 동안 살아있기 때문에 즐겨찾기를 해제해도 데이터가 남아있는 오류 발생
+        //this -> FavoriteImgFragment 에 대한 독립적인 인스턴스를 가지게 되면서 오류 해결
         photoRoomViewModel = ViewModelProvider(this, PhotoRoomViewModelFactory(PhotoRoomRepository(requireActivity().application)))[PhotoRoomViewModel::class.java]
         initFavoritePhoto()
     }

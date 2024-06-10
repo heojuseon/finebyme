@@ -40,6 +40,15 @@ class ImageListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("!!!!!!!", "onViewCreated")
 
+
+        /*
+        this -> this 를 사용하게 될경우 fragment 가 재생성(호출)될 때마다 viewmodel 도 새로 생성되면서 리스트가 화면에 다시 뿌려지는 현상이 발생
+                (해당 Fragment가 다시 그려질 때마다 ViewModel이 초기화되므로, 리스트를 새로 호출)
+         */
+        /*
+        requireActivity -> ViewModel을 Activity 범위로 설정하여 Fragment가 재생성되더라도 동일한 ViewModel 인스턴스를 사용할 수 있도록 해야한다.
+                            (ViewModel은 Activity 범위 내에서만 존재하게 되므로 Fragment가 재생성되더라도 동일한 ViewModel 인스턴스를 사용)
+         */
         photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
 
         editListener()

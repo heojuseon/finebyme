@@ -7,17 +7,18 @@
 
     <style name="Theme.FineByMe" parent="Base.Theme.FineByMe" />
     
-    <style name="AppTheme.Splash" parent="Theme.SplashScreen">
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <!-- Customize your theme here.(splash_screen) -->
         <!--전체 배경색-->
         <item name="windowSplashScreenBackground">@color/white</item>
 
         <!--가운데에 나오는 로고 아이콘 이미지-->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_anim</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_anim_vector</item>
 
         <!--스플래시 표시 기간:ms-->
         <item name="windowSplashScreenAnimationDuration">1000</item>
 
+        <!-- 스플래시 화면이 끝난 후 가져올 style 지정 -->
         <item name="postSplashScreenTheme">@style/Theme.FineByMe</item>
 
         <!--로고 아이콘 뒤의 원 색깔-->

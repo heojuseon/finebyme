@@ -10,12 +10,12 @@ import com.example.finebyme.view.ImageListFragment
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
         // SplashScreen을 적용한다.
         // setContentView 전에 작성해야 한다.
         installSplashScreen()
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
 
         setContentView(view)
 
