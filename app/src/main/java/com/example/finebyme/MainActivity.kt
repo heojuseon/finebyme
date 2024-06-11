@@ -2,6 +2,9 @@ package com.example.finebyme
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.finebyme.databinding.ActivityMainBinding
 import com.example.finebyme.view.FavoriteImgFragment
@@ -12,10 +15,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // SplashScreen을 적용한다.
         // setContentView 전에 작성해야 한다.
-        installSplashScreen()
+       val splashScreen = installSplashScreen()
+//        installSplashScreen()
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
+
+        //2초 지연
+        splashScreen.setKeepOnScreenCondition { true }
+        Handler(Looper.getMainLooper()).postDelayed({
+            splashScreen.setKeepOnScreenCondition { false }
+        }, 2000)
+
+        //test 용 -> true 가 반환될때까지 계속 splash 화면 보여짐
+//        val content: View = findViewById(android.R.id.content)
+//        content.viewTreeObserver.addOnPreDrawListener { false }
 
         setContentView(view)
 

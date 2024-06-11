@@ -13,10 +13,11 @@
         <item name="windowSplashScreenBackground">@color/white</item>
 
         <!--가운데에 나오는 로고 아이콘 이미지-->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_anim_vector</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_handwriting_io16</item>
 
         <!--스플래시 표시 기간:ms-->
         <item name="windowSplashScreenAnimationDuration">1000</item>
+
 
         <!-- 스플래시 화면이 끝난 후 가져올 style 지정 -->
         <item name="postSplashScreenTheme">@style/Theme.FineByMe</item>
