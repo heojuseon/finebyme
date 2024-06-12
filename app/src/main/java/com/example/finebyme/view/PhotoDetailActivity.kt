@@ -1,12 +1,17 @@
 package com.example.finebyme.view
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.finebyme.databinding.ActivityPhotoDetailBinding
@@ -77,10 +82,26 @@ class PhotoDetailActivity : AppCompatActivity() {
             photoFavoriteViewModel.tapPhotoLike()
         }
 
+        //url_downLoad
         binding.downBtn.setOnClickListener {
             Toast.makeText(this, "downLoad", Toast.LENGTH_SHORT).show()
+//            photoFavoriteViewModel.downloadImage()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                    downloadImage()
+                } else {
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), REQUEST_CODE_READ_MEDIA_IMAGES)
+                }
+            } else {
+                downloadImage()
+            }
         }
     }
+
+    private fun downloadImage() {
+        photoFavoriteViewModel.downloadImage(applicationContext)
+    }
+
 
     private fun setupObservers() {
         photoFavoriteViewModel.isFavorite.observe(this, Observer {
@@ -107,5 +128,21 @@ class PhotoDetailActivity : AppCompatActivity() {
                     .into(binding.photoDetailImageview)
             }
         })
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_READ_MEDIA_IMAGES) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                downloadImage()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE_READ_MEDIA_IMAGES = 100
     }
 }
