@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -74,6 +75,10 @@ class PhotoDetailActivity : AppCompatActivity() {
     private fun setupListener() {
         binding.photoLike.setOnClickListener {
             photoFavoriteViewModel.tapPhotoLike()
+        }
+
+        binding.downBtn.setOnClickListener {
+            Toast.makeText(this, "downLoad", Toast.LENGTH_SHORT).show()
         }
     }
 

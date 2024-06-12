@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--  Android 12 까지는 앱 진입 시, 기본적으로 알림이 허용이었습니다.
+    하지만, Android 13 부터는 알림의 기본 옵션이 차단이며 이를 허용하기 위해서는 별도로 권한을 요청 해야합니다.  -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
