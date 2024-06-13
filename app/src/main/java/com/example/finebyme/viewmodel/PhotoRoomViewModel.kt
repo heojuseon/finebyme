@@ -12,6 +12,8 @@ import com.example.finebyme.data.db.repository.PhotoRoomRepository
 import com.example.finebyme.data.remote.model.PhotoData
 import kotlinx.coroutines.launch
 
+
+//PhotoRoomViewModel : roomDB 에 저장되어 있는 데이터를 가져오기 위함
 class PhotoRoomViewModel(private val roomRepository: PhotoRoomRepository): ViewModel() {    //AndroidViewModel() 을 상속받아서 구현할 수 있지만 방식이 달라짐
     private val _photoList = MutableLiveData<List<PhotoData>>()
     val photoData: LiveData<List<PhotoData>> = _photoList
@@ -24,7 +26,7 @@ class PhotoRoomViewModel(private val roomRepository: PhotoRoomRepository): ViewM
 
     private fun getAll() {
         _photoList.value = roomRepository.getAllPhoto().map {
-            PhotoMapper.convertPhotoData(it)
+            PhotoMapper.convertPhotoData(it)    //Room DB에 사용하는 데이터 클래스는 Photo 지만 PhotoData로 매핑하여 사용
         }
     }
 

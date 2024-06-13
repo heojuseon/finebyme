@@ -86,13 +86,16 @@ class PhotoDetailActivity : AppCompatActivity() {
         binding.downBtn.setOnClickListener {
             Toast.makeText(this, "downLoad", Toast.LENGTH_SHORT).show()
 //            photoFavoriteViewModel.downloadImage()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {    //TIRAMISU 이상의 버전
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {  //권한 있을 경우 : PERMISSION_GRANTED, 권한 없을 경우 : PERMISSION_DENIED
+                    //권한 설정 되어있을 경우
                     downloadImage()
                 } else {
+                    //권한 물어보기
+                    //여러개의 원한을 요청 할 경우가 있을 수 있어 인자로 array 를 받는다.
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), REQUEST_CODE_READ_MEDIA_IMAGES)
                 }
-            } else {
+            } else {    //TIRAMISU 이하의 버전
                 downloadImage()
             }
         }
@@ -131,12 +134,17 @@ class PhotoDetailActivity : AppCompatActivity() {
     }
 
 
+    //onRequestPermissionsResult : 권한팝업이 뜨고 권한을 허용을 하였는지 거부 하였는지를 체크하여 해당 이벤트에 맞는 동작을 실행하는 함수
+    //override 하여 사용
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_READ_MEDIA_IMAGES) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) { //권한 허용을 클릭 했을 때 로직
+                //권한이 허용 되었을 경우 PackageManager.PERMISSION_GRANTED 으로 넘어옴으로 권한 승인 후 동작을 구현
                 downloadImage()
-            } else {
+            } else {    //권한 거절을 클릭 했을 때 로직
+                //권한이 처음으로 거절되었을 경우는 반환값으로 true가 반환되고, 두번째는 flase가 반환
+                //ex) 한번더 권한을 요청하게끔 구현 가능
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }

@@ -27,16 +27,6 @@ class PhotoViewModel: ViewModel() {
     val photoData: LiveData<List<PhotoData>> = _photoList
 
 
-    //리스트화면에서 상세화면으로 데이터를 전달할 viewmodel 생성(해당 포지션 값에 대한 이미지 데이터 전달)
-    private val _selectedPosition = MutableLiveData<Int>()
-    val selectedPosition: LiveData<Int> = _selectedPosition
-
-    //어뎁터를 클릭했을때 해당 position 과 이미지 리스트를 담을 sendData 함수 생성
-    fun sendData(position: Int, photoList: List<PhotoData>) {
-        _selectedPosition.value = position
-        _photoList.value = photoList
-    }
-
     private val _query = MutableLiveData<String>("")
     val query: LiveData<String> = _query
     fun searchImg(query: String) {

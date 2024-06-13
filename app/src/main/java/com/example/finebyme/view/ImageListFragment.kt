@@ -56,16 +56,6 @@ class ImageListFragment : Fragment() {
     }
 
     private fun editListener() {
-//        binding.searchImg.setOnEditorActionListener { textView, actionId, event ->
-//            var handled = false
-//            if (actionId == EditorInfo.IME_ACTION_DONE){
-//                val query = textView.text.toString()
-//                Toast.makeText(requireContext(), "$query: 검색 됨 ", Toast.LENGTH_SHORT).show()
-//                photoViewModel.searchImg(query)
-//                handled = true
-//            }
-//            handled
-//        }
 
         binding.searchImg.setText(photoViewModel.query.value.toString())
         binding.searchImg.addTextChangedListener(object: TextWatcher {
@@ -91,11 +81,6 @@ class ImageListFragment : Fragment() {
             override fun onPhotoClick(position: Int, photoList: List<PhotoData>) {
                 Toast.makeText(context, "photoId: ${photoList[position].id} + position: $position", Toast.LENGTH_SHORT).show()
 
-//                //Fragment to Fragment
-//                //ViewModel을 통해 클릭된 이미지 리스트와 포지션 값 설정
-//                photoViewModel.sendData(position, photoList)
-//                moveDetailFragment()
-
                 //Fragment to Activity
                 val intent = Intent(context, PhotoDetailActivity::class.java)
                 val selectedImage = photoList[position]
@@ -117,15 +102,6 @@ class ImageListFragment : Fragment() {
                 Toast.makeText(requireContext(), "No photos found", Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    //Fragment to Fragment
-    private fun moveDetailFragment() {
-        val fragmentTransaction = parentFragmentManager.beginTransaction()
-        val detailFragment = DetailFragment()
-        fragmentTransaction.replace(R.id.main_container, detailFragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
     }
 
     private fun getPhotos(photoList: List<PhotoData>) {
