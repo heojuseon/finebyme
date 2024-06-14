@@ -1,5 +1,6 @@
-package com.example.finebyme.data.db.entity
+package com.example.finebyme.data.db.converter
 
+import com.example.finebyme.data.db.entity.Photo
 import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.data.remote.model.Urls
 

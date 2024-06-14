@@ -1,14 +1,12 @@
-package com.example.finebyme
+package com.example.finebyme.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.finebyme.R
 import com.example.finebyme.databinding.ActivityMainBinding
-import com.example.finebyme.view.FavoriteImgFragment
-import com.example.finebyme.view.ImageListFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

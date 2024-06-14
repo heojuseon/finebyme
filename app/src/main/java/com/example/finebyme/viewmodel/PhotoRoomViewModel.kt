@@ -4,13 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide.init
-import com.example.finebyme.data.db.entity.Photo
-import com.example.finebyme.data.db.entity.PhotoMapper
+import com.example.finebyme.data.db.converter.PhotoMapper
 import com.example.finebyme.data.db.repository.PhotoRoomRepository
 import com.example.finebyme.data.remote.model.PhotoData
-import kotlinx.coroutines.launch
 
 
 //PhotoRoomViewModel : roomDB 에 저장되어 있는 데이터를 가져오기 위함

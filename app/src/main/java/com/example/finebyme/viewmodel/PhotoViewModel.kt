@@ -8,13 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide.init
 import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.data.remote.repository.PhotoRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Exception
+import javax.inject.Inject
 
 
-class PhotoViewModel: ViewModel() {
+@HiltViewModel
+class PhotoViewModel @Inject constructor(private val photoRepository: PhotoRepository): ViewModel() {
 
     //MutableLiveData :
     //LiveData 서브 클래스, 값을 변경 가능(setValue() : 메인스레드에서 값 변경 / postValue() : 백그라운드에서 값 변경)
@@ -69,7 +72,8 @@ class PhotoViewModel: ViewModel() {
             try {
                 //withContext : 네트워크 요청을 백그라운드 스레드에서 수행 -> 네트워크 요청과 같은 I/O 작업을 메인 스레드가 아닌 다른 스레드에서 실행
                 val response = withContext(Dispatchers.IO) {
-                    PhotoRepository.unsplashApi.getPhotoList()
+//                    PhotoRepository.unsplashApi.getPhotoList()
+                    photoRepository.getPhotoList()
                 }
                 if (response.isSuccessful) {    //응답 성공시
                     _photoList.postValue(response.body())
