@@ -7,7 +7,10 @@ import android.os.Looper
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.finebyme.R
 import com.example.finebyme.databinding.ActivityMainBinding
+import com.example.finebyme.view.ImageListFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {

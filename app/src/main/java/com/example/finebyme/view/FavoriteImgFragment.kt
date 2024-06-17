@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,12 +21,17 @@ import com.example.finebyme.data.db.repository.PhotoRoomRepository
 import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.databinding.FragmentFavoriteImgBinding
 import com.example.finebyme.viewmodel.PhotoRoomViewModel
-import com.example.finebyme.viewmodel.PhotoRoomViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Main
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FavoriteImgFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteImgBinding
-    private lateinit var photoRoomViewModel: PhotoRoomViewModel
+    //@HiltViewModel 를 사용하여  viewmodel 초기화 작업 따로 안해도됨
+    private val photoRoomViewModel: PhotoRoomViewModel by viewModels()
+
     private val adapter = PhotoAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +44,6 @@ class FavoriteImgFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //viewmodel 초기화
-        //requireActivity -> requireActivity 사용하게되면 최상위 액티비티인 MainActivity 의 viewmodel 인스턴스를 공유하게 되면서 Activity의 전체 생명주기 동안 살아있기 때문에 즐겨찾기를 해제해도 데이터가 남아있는 오류 발생
-        //this -> FavoriteImgFragment 에 대한 독립적인 인스턴스를 가지게 되면서 오류 해결
-        photoRoomViewModel = ViewModelProvider(this, PhotoRoomViewModelFactory(PhotoRoomRepository(requireActivity().application)))[PhotoRoomViewModel::class.java]
         initFavoritePhoto()
     }
 

@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -20,11 +21,13 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.finebyme.data.db.repository.PhotoRoomRepository
 import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.viewmodel.PhotoFavoriteViewModel
-import com.example.finebyme.viewmodel.PhotoFavoriteViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PhotoDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoDetailBinding
-    private lateinit var photoFavoriteViewModel: PhotoFavoriteViewModel
+    //PhotoFavoriteViewModel 클래스에서 @HiltViewModel 를 사용하여  viewmodel 초기화 작업 따로 안해도됨
+    private val photoFavoriteViewModel: PhotoFavoriteViewModel by viewModels()
 
     private var position: Int = -1
 
@@ -66,11 +69,6 @@ class PhotoDetailActivity : AppCompatActivity() {
             intent.getParcelableExtra("photoList")
         }
         val fromFavorite = intent.getBooleanExtra("fromFavoriteImgFragment", false)
-        //viewmodel 초기화
-        photoFavoriteViewModel = ViewModelProvider(
-            this,
-            PhotoFavoriteViewModelFactory(PhotoRoomRepository(application))
-        )[PhotoFavoriteViewModel::class.java]
 
         selectedImage?.let {
             photoFavoriteViewModel.onCreateViewModel(selectedImage, fromFavorite)
@@ -103,6 +101,8 @@ class PhotoDetailActivity : AppCompatActivity() {
 
     private fun downloadImage() {
         photoFavoriteViewModel.downloadImage(applicationContext)
+        //ViewModel에서 Context를 직접 참조하는 것은 메모리 누수를 초래할 수 있으므로 권장되지 않음
+//        photoFavoriteViewModel.downloadImage()
     }
 
 

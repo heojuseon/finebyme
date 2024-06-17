@@ -37,4 +37,8 @@ class PhotoRepository @Inject constructor(private val unsplashApi: UnsplashApi) 
     }
 
 
+    suspend fun getSearchPhoto(query: String): Response<List<PhotoData>>{
+        return unsplashApi.getSearchPhoto(query)
+    }
+
 }

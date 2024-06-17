@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,11 +21,15 @@ import com.example.finebyme.adapter.PhotoAdapter.OnPhotoItemClickListener
 import com.example.finebyme.data.remote.model.PhotoData
 import com.example.finebyme.databinding.FragmentImageListBinding
 import com.example.finebyme.viewmodel.PhotoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class ImageListFragment : Fragment() {
     private lateinit var binding: FragmentImageListBinding
-    private lateinit var photoViewModel: PhotoViewModel
+    //@HiltViewModel 를 사용하여  viewmodel 초기화 작업 따로 안해도됨
+    //activityViewModels: ViewModel을 Activity 범위로 설정하여 Fragment가 재생성되더라도 동일한 ViewModel 인스턴스를 사용할 수 있도록 해야한다.
+    private val photoViewModel: PhotoViewModel by activityViewModels()
     private val adapter = PhotoAdapter()
 
     override fun onCreateView(
@@ -49,7 +54,7 @@ class ImageListFragment : Fragment() {
         requireActivity -> ViewModel을 Activity 범위로 설정하여 Fragment가 재생성되더라도 동일한 ViewModel 인스턴스를 사용할 수 있도록 해야한다.
                             (ViewModel은 Activity 범위 내에서만 존재하게 되므로 Fragment가 재생성되더라도 동일한 ViewModel 인스턴스를 사용)
          */
-        photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
+//        photoViewModel = ViewModelProvider(requireActivity())[PhotoViewModel::class.java]
 
         editListener()
         initPhoto()

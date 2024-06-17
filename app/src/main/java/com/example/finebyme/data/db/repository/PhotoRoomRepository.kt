@@ -1,22 +1,12 @@
 package com.example.finebyme.data.db.repository
 
-import android.app.Application
-import androidx.lifecycle.LiveData
 import com.example.finebyme.data.db.dao.PhotoDAO
-import com.example.finebyme.data.db.database.PhotoDatabase
 import com.example.finebyme.data.db.entity.Photo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class PhotoRoomRepository(application: Application) {
-    private val photoDAO: PhotoDAO
-    private val photoList: List<Photo>
-    //초기화
-    init {
-        val db = PhotoDatabase.getInstance(application)!!
-        photoDAO = db.photoDao()
-        photoList = db.photoDao().getAll()
-    }
+class PhotoRoomRepository @Inject constructor(private val photoDAO: PhotoDAO) {
 
     suspend fun insertPhoto(photo: Photo){
         withContext(Dispatchers.IO) {
