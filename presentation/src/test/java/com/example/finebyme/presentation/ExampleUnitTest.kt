@@ -1,4 +1,4 @@
-package com.study.presentation
+package com.example.finebyme.presentation
 
 import org.junit.Test
 

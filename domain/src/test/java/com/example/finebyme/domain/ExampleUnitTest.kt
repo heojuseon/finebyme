@@ -1,4 +1,4 @@
-package com.study.domain
+package com.example.finebyme.domain
 
 import org.junit.Test
 

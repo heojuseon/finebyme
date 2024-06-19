@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.study.presentation"
+    namespace = "com.example.finebyme.presentation"
     compileSdk = 33
 
     defaultConfig {
@@ -35,7 +35,6 @@ android {
 dependencies {
 
     implementation(project(":domain")) // Domain Layer에 대한 의존성
-
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.7.0")

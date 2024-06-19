@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.study.data"
+    namespace = "com.example.finebyme.data"
     compileSdk = 33
 
     defaultConfig {

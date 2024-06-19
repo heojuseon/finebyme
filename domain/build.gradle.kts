@@ -1,10 +1,13 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")   //kapt 에서 KSP 로 이전(Room DB)
+    id("kotlin-parcelize")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "com.study.domain"
+    namespace = "com.example.finebyme.domain"
     compileSdk = 33
 
     defaultConfig {
@@ -33,6 +36,13 @@ android {
 }
 
 dependencies {
+    //hilt
+    //version 2.44 로 설정시
+    //Caused by: java.lang.ClassNotFoundException: Didn't find class "com.example.hiltapp.Hilt_HiltApplication" on path: DexPathList 오류 발생
+    val hiltVersion = "2.51"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.7.0")

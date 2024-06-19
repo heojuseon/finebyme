@@ -1,4 +1,4 @@
-package com.study.data
+package com.example.finebyme.data
 
 import org.junit.Test
 
