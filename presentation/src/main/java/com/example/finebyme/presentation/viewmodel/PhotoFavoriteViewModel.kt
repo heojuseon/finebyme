@@ -2,20 +2,14 @@ package com.example.finebyme.viewmodel
 
 import android.app.DownloadManager
 import android.content.Context
-import android.content.Context.DOWNLOAD_SERVICE
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.finebyme.data.db.entity.Photo
-import com.example.finebyme.data.db.repository.PhotoRoomRepository
-import com.example.finebyme.data.remote.model.PhotoData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -98,7 +92,7 @@ class PhotoFavoriteViewModel @Inject constructor(
             val fileName = simpleDateFormat.format(Date(currentTimeMillis)) + ".jpg"
 
             //다운로드 매니저 선언 및 파일 다운로드
-            val manager = context?.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+            val manager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             //다운로드 매니저 객체 생성
             val request =
                 DownloadManager.Request(Uri.parse(downloadUrl!!.trim { it <= ' ' }))  //파일 다운로드 주소 : 확장자명 포함, trim : 문자열 합칠 경우 공백 제거
@@ -120,20 +114,3 @@ class PhotoFavoriteViewModel @Inject constructor(
         }
     }
 }
-
-
-//Hilt는 ViewModel을 주입할 수 있으므로 ViewModelProvider.Factory를 직접 구현할 필요가 없다.
-
-////ViewModel() 을 상속받아서 뷰모델 클래스를 생성할때는 ViewModelProvider.Factory 를 상속받는 Factory 클래스를 구현해야한다 -> viewModel 초기화 작업 필요
-////AndroidViewModel() 을 상속받아서 구현할 수 있지만 방식이 달라짐
-//// ######### ViewModelProvider.Factory 를 사용함으로써 둘 이상의 Activity 간에 공유 가능 #########
-//    class PhotoFavoriteViewModelFactory(private val repository: PhotoRoomRepository) :
-//        ViewModelProvider.Factory {
-//        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//            if (modelClass.isAssignableFrom(PhotoFavoriteViewModel::class.java)) {
-//                @Suppress("UNCHECKED_CAST")
-//                return PhotoFavoriteViewModel(repository) as T  // T 라는 타입으로 캐스트 하고 return(as : 자료형 변환)
-//            }
-//            throw IllegalArgumentException("Unknown ViewModel class")
-//        }
-//    }

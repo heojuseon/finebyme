@@ -50,7 +50,7 @@ dependencies {
 
     implementation(project(":data")) // data Layer에 대한 의존성
     implementation(project(":domain")) // Domain Layer에 대한 의존성
-    implementation(project(":presentation")) // Domain Layer에 대한 의존성
+    implementation(project(":presentation")) // presentation Layer에 대한 의존성
 
     // Splash
     implementation ("androidx.core:core-splashscreen:1.0.1")

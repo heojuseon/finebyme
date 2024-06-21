@@ -1,4 +1,4 @@
-package com.example.finebyme.adapter
+package com.example.finebyme.presentation.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,10 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.finebyme.data.db.entity.Photo
-import com.example.finebyme.data.remote.model.PhotoData
-import com.example.finebyme.data.remote.model.Urls
-import com.example.finebyme.databinding.ItemPhotoBinding
+import com.example.finebyme.presentation.databinding.ItemPhotoBinding
 
 class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
 //    private var photos: List<PhotoData> = emptyList()   //비어있는 불변 리스트 생성
@@ -29,13 +26,13 @@ class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
         pItemClickListener = itemClickListener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoAdapter.Holder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
     }
 
 
-    override fun onBindViewHolder(holder: PhotoAdapter.Holder, position: Int) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(photos[position])
     }
 

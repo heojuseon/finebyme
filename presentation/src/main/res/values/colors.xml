@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+
+    <item name="hashtag_stroke_width" type="dimen" format="float">5</item>
+    <color name="indigo_400">#5C6BC0</color>
+    <color name="cyan_a100">#84FFFF</color>
+    <color name="pink_500">#E91E63</color>
+    <color name="cyan_300">#4DD0E1</color>
+</resources>

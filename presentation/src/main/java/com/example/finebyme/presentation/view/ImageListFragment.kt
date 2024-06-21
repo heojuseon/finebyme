@@ -1,4 +1,4 @@
-package com.example.finebyme.view
+package com.example.finebyme.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,21 +8,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.finebyme.R
-import com.example.finebyme.adapter.PhotoAdapter
-import com.example.finebyme.adapter.PhotoAdapter.OnPhotoItemClickListener
-import com.example.finebyme.data.remote.model.PhotoData
-import com.example.finebyme.databinding.FragmentImageListBinding
-import com.example.finebyme.viewmodel.PhotoViewModel
+import com.example.finebyme.presentation.adapter.PhotoAdapter
+import com.example.finebyme.presentation.databinding.FragmentImageListBinding
+import com.example.finebyme.presentation.viewmodel.PhotoViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class ImageListFragment : Fragment() {
@@ -84,7 +77,11 @@ class ImageListFragment : Fragment() {
 
         adapter.setPhotoItemClickListener(object : OnPhotoItemClickListener{
             override fun onPhotoClick(position: Int, photoList: List<PhotoData>) {
-                Toast.makeText(context, "photoId: ${photoList[position].id} + position: $position", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "photoId: ${photoList[position].id} + position: $position",
+                    Toast.LENGTH_SHORT
+                ).show()
 
                 //Fragment to Activity
                 val intent = Intent(context, PhotoDetailActivity::class.java)

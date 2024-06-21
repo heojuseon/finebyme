@@ -1,13 +1,13 @@
-package com.example.finebyme.view
+package com.example.finebyme
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.finebyme.R
 import com.example.finebyme.databinding.ActivityMainBinding
-import com.example.finebyme.view.ImageListFragment
+import com.example.finebyme.presentation.view.FavoriteImgFragment
+import com.example.finebyme.presentation.view.ImageListFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

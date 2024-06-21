@@ -1,25 +1,20 @@
-package com.example.finebyme.view
+package com.example.finebyme.presentation.view
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.finebyme.databinding.ActivityPhotoDetailBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.finebyme.data.db.repository.PhotoRoomRepository
-import com.example.finebyme.data.remote.model.PhotoData
+import com.example.finebyme.presentation.databinding.ActivityPhotoDetailBinding
 import com.example.finebyme.viewmodel.PhotoFavoriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -85,13 +80,21 @@ class PhotoDetailActivity : AppCompatActivity() {
             Toast.makeText(this, "downLoad", Toast.LENGTH_SHORT).show()
 //            photoFavoriteViewModel.downloadImage()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {    //TIRAMISU 이상의 버전
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {  //권한 있을 경우 : PERMISSION_GRANTED, 권한 없을 경우 : PERMISSION_DENIED
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_MEDIA_IMAGES
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {  //권한 있을 경우 : PERMISSION_GRANTED, 권한 없을 경우 : PERMISSION_DENIED
                     //권한 설정 되어있을 경우
                     downloadImage()
                 } else {
                     //권한 물어보기
                     //여러개의 원한을 요청 할 경우가 있을 수 있어 인자로 array 를 받는다.
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), REQUEST_CODE_READ_MEDIA_IMAGES)
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                        REQUEST_CODE_READ_MEDIA_IMAGES
+                    )
                 }
             } else {    //TIRAMISU 이하의 버전
                 downloadImage()

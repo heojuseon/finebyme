@@ -21,10 +21,10 @@
         android:theme="@style/Theme.FineByMe"
         tools:targetApi="31">
         <activity
-            android:name=".view.PhotoDetailActivity"
+            android:name=".presentation.view.PhotoDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".MainActivity"
             android:theme="@style/Theme.App.Starting"
             android:exported="true">
             <intent-filter>

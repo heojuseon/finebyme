@@ -1,30 +1,21 @@
-package com.example.finebyme.view
+package com.example.finebyme.presentation.view
 
-import android.app.Activity.RESULT_OK
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.finebyme.R
-import com.example.finebyme.adapter.PhotoAdapter
-import com.example.finebyme.data.db.entity.Photo
-import com.example.finebyme.data.db.repository.PhotoRoomRepository
-import com.example.finebyme.data.remote.model.PhotoData
-import com.example.finebyme.databinding.FragmentFavoriteImgBinding
-import com.example.finebyme.viewmodel.PhotoRoomViewModel
+import com.example.finebyme.presentation.adapter.PhotoAdapter
+import com.example.finebyme.presentation.databinding.FragmentFavoriteImgBinding
+import com.example.finebyme.presentation.viewmodel.PhotoRoomViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers.Main
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoriteImgFragment : Fragment() {
@@ -50,7 +41,11 @@ class FavoriteImgFragment : Fragment() {
     private fun initFavoritePhoto() {
         adapter.setPhotoItemClickListener(object : PhotoAdapter.OnPhotoItemClickListener {
             override fun onPhotoClick(position: Int, photoList: List<PhotoData>) {
-                Toast.makeText(context, "photoId: ${photoList[position].id} + position: $position", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "photoId: ${photoList[position].id} + position: $position",
+                    Toast.LENGTH_SHORT
+                ).show()
                 //Fragment to Activity
                 val intent = Intent(context, PhotoDetailActivity::class.java)
                 val selectedImage = photoList[position]
@@ -84,7 +79,7 @@ class FavoriteImgFragment : Fragment() {
 
     val favoritePositionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         Log.d("@!@", "result.resultCode : ${result.resultCode}")
-        if (result.resultCode == RESULT_OK){
+        if (result.resultCode == Activity.RESULT_OK){
             val resultPosition = result.data?.getIntExtra("result_position", -1)
             Log.d("Favorite_result: ", resultPosition.toString())
             if (resultPosition != null) {
