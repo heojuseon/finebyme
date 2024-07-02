@@ -16,6 +16,10 @@ import com.example.finebyme.presentation.adapter.PhotoAdapter
 import com.example.finebyme.presentation.databinding.FragmentImageListBinding
 import com.example.finebyme.presentation.viewmodel.PhotoViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.lifecycle.Observer
+import com.example.finebyme.presentation.adapter.PhotoAdapter.OnPhotoItemClickListener
+import com.example.finebyme.domain.entity.Photo
+import com.google.gson.Gson
 
 @AndroidEntryPoint
 class ImageListFragment : Fragment() {
@@ -76,42 +80,44 @@ class ImageListFragment : Fragment() {
     private fun initPhoto() {
 
         adapter.setPhotoItemClickListener(object : OnPhotoItemClickListener{
-            override fun onPhotoClick(position: Int, photoList: List<PhotoData>) {
+            override fun onPhotoClick(position: Int, photo: List<Photo>) {
                 Toast.makeText(
                     context,
-                    "photoId: ${photoList[position].id} + position: $position",
+                    "photoId: ${photo[position].id} + position: $position",
                     Toast.LENGTH_SHORT
                 ).show()
 
                 //Fragment to Activity
                 val intent = Intent(context, PhotoDetailActivity::class.java)
-                val selectedImage = photoList[position]
+                val selectedImage = photo[position]
+
+                //객체를 직렬화 하지 않고 json 으로 변환후 string 형태로 전달
+                val photoJson = Gson().toJson(selectedImage)
+                Log.d("!@!@", "gson: $photoJson")
+
                 intent.putExtra("position", position)
-                intent.putExtra("photoList", selectedImage)
+                intent.putExtra("photo", photoJson)
                 startActivity(intent)   // 추후 registerForActivityResult() 사용 생각
             }
         })
 
+        //클린아키텍쳐
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
 
         //viewModel 의 photoData 관찰하여 데이터가 변경될 때마다 UI를 업데이트
-        photoViewModel.photoData.observe(viewLifecycleOwner, Observer { photoList ->
-            if (photoList != null) {
-                getPhotos(photoList)
-                adapter.addItem(photoList)
-            } else {
-                Toast.makeText(requireContext(), "No photos found", Toast.LENGTH_SHORT).show()
-            }
+        photoViewModel.photoData.observe(viewLifecycleOwner, Observer { photos ->
+            adapter.addItem(photos)
+            getPhotos(photos)
         })
     }
 
-    private fun getPhotos(photoList: List<PhotoData>) {
-        for (photo in photoList) {
+    private fun getPhotos(photos: List<Photo>) {
+        for (photo in photos) {
             Log.d("photo_id: ", photo.id)
-            Log.d("photo_altDescription: ", photo.altDescription.toString())
-            Log.d("photo_description: ", photo.description.toString())
-            Log.d("photo_urls: ", photo.urls.regular)
+            Log.d("altDescription: ", photo.altDescription)
+            Log.d("photo_description: ", photo.description)
+            Log.d("photo_urls: ", photo.thumbUrl)
         }
     }
 }

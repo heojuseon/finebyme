@@ -10,6 +10,7 @@ data class Photo (
 
     val description: String = "",
 
+    //title
     val altDescription: String = "",
 
     val thumbUrl: String = "",

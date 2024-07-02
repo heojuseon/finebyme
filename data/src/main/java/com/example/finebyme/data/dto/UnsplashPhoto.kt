@@ -1,17 +1,23 @@
 package com.example.finebyme.data.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class UnsplashPhoto(
+    @SerializedName("id")
     val id: String = "",
 
+    @SerializedName("width")
     val width: Int = 0,
 
+    @SerializedName("height")
     val height: Int = 0,
 
-    val description: String = "",
+    @SerializedName("description")
+    val description: String?,
 
-    val altDescription: String = "",
+    @SerializedName("alt_description")
+    val altDescription: String?,
 
-    val thumbUrl: String = "",
-
-    val fullUrl: String = ""
+    @SerializedName("urls")
+    val urls: UnsplashPhotoUrls
 )

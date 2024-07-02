@@ -1,4 +1,4 @@
-package com.example.finebyme.viewmodel
+package com.example.finebyme.presentation.viewmodel
 
 import android.app.DownloadManager
 import android.content.Context
@@ -9,9 +9,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.finebyme.domain.entity.Photo
+import com.example.finebyme.domain.usecase.GetFavoriteCheckedPhotoUseCase
+import com.example.finebyme.domain.usecase.SetFavoritePhotoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -19,35 +21,43 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotoFavoriteViewModel @Inject constructor(
-    private val roomRepository: PhotoRoomRepository
-//    @ApplicationContext private val context: Context
+    private val setFavoritePhotoUseCase: SetFavoritePhotoUseCase,
+    private val getFavoriteCheckedPhotoUseCase: GetFavoriteCheckedPhotoUseCase
 ) : ViewModel() {
 
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> = _isFavorite
 
-    private val _photo = MutableLiveData<PhotoData>()
-    val photo: LiveData<PhotoData> = _photo
+    private val _photo = MutableLiveData<Photo>()
+    val photo: LiveData<Photo> = _photo
 
-
-    fun onCreateViewModel(photoData: PhotoData, fromFavoriteScreen: Boolean) {
-        _photo.value = photoData
+    fun onCreateViewModel(photo: Photo, fromFavoriteScreen: Boolean) {
+        _photo.value = photo
         if (fromFavoriteScreen) {
             _isFavorite.value = true
         } else {
-            _isFavorite.value = isFavoritePhoto(photoId = photoData.id)
+            _isFavorite.value = isFavoritePhoto(photoId = photo.id)
             Log.d("_isFavorite.value: ", _isFavorite.value.toString())
         }
     }
 
     private fun isFavoritePhoto(photoId: String): Boolean {
-        return roomRepository.isFavorite(photoId) > 0
+        return getFavoriteCheckedPhotoUseCase.execute(photoId) > 0
     }
 
     fun tapPhotoLike(){
         if (_isFavorite.value == true) {
             _photo.value?.let {
-                deletePhoto(it.id)
+                val photo = Photo(
+                    id = it.id,
+                    width = it.width,
+                    height = it.height,
+                    description = it.description,
+                    altDescription = it.altDescription,
+                    thumbUrl = it.thumbUrl,
+                    fullUrl = it.fullUrl
+                )
+                deletePhoto(photo)
                 _isFavorite.value = false
             }
         } else {
@@ -58,23 +68,23 @@ class PhotoFavoriteViewModel @Inject constructor(
                     height = it.height,
                     description = it.description,
                     altDescription = it.altDescription,
-                    url = it.urls.regular
+                    thumbUrl = it.thumbUrl,
+                    fullUrl = it.fullUrl
                 )
                 insertPhoto(photo)
                 _isFavorite.value = true
             }
         }
     }
-
-    private fun deletePhoto(photoId: String) {
+    private fun deletePhoto(photo: Photo) {
         viewModelScope.launch {
-            roomRepository.deletePhoto(photoId)
+            setFavoritePhotoUseCase.execute(false, photo)
         }
     }
 
     private fun insertPhoto(photo: Photo) {
         viewModelScope.launch {
-            roomRepository.insertPhoto(photo)
+            setFavoritePhotoUseCase.execute(true, photo)
         }
 
     }
@@ -82,7 +92,7 @@ class PhotoFavoriteViewModel @Inject constructor(
     //ViewModel에서 Context를 직접 참조하는 것은 메모리 누수를 초래할 수 있으므로 권장되지 않음
 //    fun downloadImage() {
     fun downloadImage(context: Context?) {
-        val downloadUrl = _photo.value?.urls?.full
+        val downloadUrl = _photo.value?.fullUrl
         Log.d("!@!@!@", "downloadUrl: $downloadUrl")
 
         try {

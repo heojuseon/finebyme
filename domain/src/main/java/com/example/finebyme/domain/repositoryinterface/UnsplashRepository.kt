@@ -4,7 +4,9 @@ import com.example.finebyme.domain.entity.Photo
 
 interface UnsplashRepository {
 
-    suspend fun getPhotoList(): List<Photo>
+    //fake
+//    suspend fun getPhotoListFake(): List<Photo>
 
+    suspend fun getPhotoList(): List<Photo>
     suspend fun getSearchPhotoList(query: String): List<Photo>
 }

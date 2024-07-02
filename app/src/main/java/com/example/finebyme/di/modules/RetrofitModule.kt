@@ -1,13 +1,12 @@
 package com.example.finebyme.di.modules
 
-import com.example.finebyme.data.remote.api.UnsplashApi
+import com.example.finebyme.data.datasource.service.UnsplashAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -26,7 +25,6 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideUnsplashApi(retrofit: Retrofit): UnsplashApi =
-        retrofit.create(UnsplashApi::class.java)
-
+    fun provideUnsplashApi(retrofit: Retrofit): UnsplashAPI =
+        retrofit.create(UnsplashAPI::class.java)
 }

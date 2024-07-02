@@ -2,8 +2,8 @@ package com.example.finebyme.di.modules
 
 import android.content.Context
 import androidx.room.Room
-import com.example.finebyme.data.db.dao.PhotoDAO
-import com.example.finebyme.data.db.database.PhotoDatabase
+import com.example.finebyme.data.datasource.db.AppDatabase
+import com.example.finebyme.data.datasource.db.FavoritePhotoDAO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,13 +16,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DataBaseModule {
-
     @Provides //Moudle을 구현하는 방법에는 Provides와 Bidns 두가지가 있다. 외부라이브러리에는 Binds를 못쓴다.
     @Singleton //module을 싱글톤으로 만들겠다.
     fun provideAppDataBase(@ApplicationContext context: Context) =
         Room.databaseBuilder(
             context,
-            PhotoDatabase::class.java,
+            AppDatabase::class.java,
             "photo.db"
         )
             //Main Thread에서 DB에 입출력을 가능하게 함 -> 없을 경우 FavoriteFragment 에서 이미지 못가져옴
@@ -33,7 +32,7 @@ class DataBaseModule {
     @Provides
     @Singleton
 //    fun providePhotoDao(photoDatabase: PhotoDatabase) = photoDatabase.photoDao()
-    fun providePhotoDao(photoDatabase: PhotoDatabase): PhotoDAO {
-        return photoDatabase.photoDao()
+    fun providePhotoDao(appDatabase: AppDatabase): FavoritePhotoDAO {
+        return appDatabase.favoritePhotoDao()
     }
 }

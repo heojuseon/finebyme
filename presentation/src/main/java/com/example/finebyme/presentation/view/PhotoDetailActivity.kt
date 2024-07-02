@@ -14,8 +14,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.example.finebyme.domain.entity.Photo
 import com.example.finebyme.presentation.databinding.ActivityPhotoDetailBinding
-import com.example.finebyme.viewmodel.PhotoFavoriteViewModel
+import com.google.gson.Gson
+import com.example.finebyme.presentation.viewmodel.PhotoFavoriteViewModel
+import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,16 +60,15 @@ class PhotoDetailActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-//        val selectedImage: PhotoData? = intent.getParcelableExtra("photoList")    //deprecated
-        val selectedImage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra<PhotoData>("photoList", PhotoData::class.java)
-        } else {
-            intent.getParcelableExtra("photoList")
-        }
+
+        val photoJson = intent.getStringExtra("photo")
+        val photo: Photo = Gson().fromJson(photoJson, Photo::class.java)
+        Log.d("!@!@", "photo: $photo")
+
         val fromFavorite = intent.getBooleanExtra("fromFavoriteImgFragment", false)
 
-        selectedImage?.let {
-            photoFavoriteViewModel.onCreateViewModel(selectedImage, fromFavorite)
+        photo.let {
+            photoFavoriteViewModel.onCreateViewModel(photo, fromFavorite)
         }
     }
 
@@ -75,10 +77,9 @@ class PhotoDetailActivity : AppCompatActivity() {
             photoFavoriteViewModel.tapPhotoLike()
         }
 
-        //url_downLoad
+//        //url_downLoad
         binding.downBtn.setOnClickListener {
             Toast.makeText(this, "downLoad", Toast.LENGTH_SHORT).show()
-//            photoFavoriteViewModel.downloadImage()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {    //TIRAMISU 이상의 버전
                 if (ContextCompat.checkSelfPermission(
                         this,
@@ -128,7 +129,7 @@ class PhotoDetailActivity : AppCompatActivity() {
                 binding.detailHeight.text = "height: ${photo.height}"
 
                 Glide.with(this)
-                    .load(photo.urls.full)
+                    .load(photo.fullUrl)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(binding.photoDetailImageview)

@@ -74,6 +74,8 @@ dependencies {
     ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
     ksp("androidx.hilt:hilt-compiler:1.2.0")
 
+    implementation ("com.google.code.gson:gson:2.9.0")
+
 
     implementation("androidx.fragment:fragment-ktx:1.8.0")
     implementation("androidx.core:core-ktx:1.9.0")

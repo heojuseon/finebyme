@@ -1,11 +1,12 @@
 package com.example.finebyme.data.datasource
 
 import com.example.finebyme.data.dto.UnsplashPhoto
-import javax.inject.Inject
+import com.example.finebyme.data.dto.UnsplashPhotoUrls
+import retrofit2.Response
 
 class UnsplashDataSourceFake : UnsplashDataSource {
 
-    override suspend fun getPhotoList(): List<UnsplashPhoto> {
+    suspend fun getPhotoListFake(): List<UnsplashPhoto> {
         return listOf(
             UnsplashPhoto(
                 id = "1",
@@ -13,8 +14,10 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             ),
             UnsplashPhoto(
                 id = "2",
@@ -22,8 +25,10 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             ),
             UnsplashPhoto(
                 id = "3",
@@ -31,8 +36,10 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             ),
             UnsplashPhoto(
                 id = "4",
@@ -40,8 +47,10 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             ),
             UnsplashPhoto(
                 id = "5",
@@ -49,8 +58,10 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             ),
             UnsplashPhoto(
                 id = "6",
@@ -58,8 +69,10 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             ),
             UnsplashPhoto(
                 id = "7",
@@ -67,8 +80,10 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             ),
             UnsplashPhoto(
                 id = "8",
@@ -76,8 +91,10 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             ),
             UnsplashPhoto(
                 id = "9",
@@ -85,8 +102,10 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             ),
             UnsplashPhoto(
                 id = "10",
@@ -94,10 +113,20 @@ class UnsplashDataSourceFake : UnsplashDataSource {
                 height = 1080,
                 description = "fake",
                 altDescription = "fake",
-                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
-                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
+                urls = UnsplashPhotoUrls("https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+                    "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85")
+//                thumbUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=80&w=200",
+//                fullUrl = "https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1OTkyNjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg4NDY2MDd8&ixlib=rb-4.0.3&q=85"
             )
         )
+    }
+
+    override suspend fun getPhotoList(): Response<List<UnsplashPhoto>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getSearchPhoto(query: String): Response<List<UnsplashPhoto>> {
+        TODO("Not yet implemented")
     }
 
 }

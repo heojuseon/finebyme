@@ -6,15 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.example.finebyme.domain.entity.Photo
 import com.example.finebyme.presentation.databinding.ItemPhotoBinding
 
 class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
-//    private var photos: List<PhotoData> = emptyList()   //비어있는 불변 리스트 생성
-    private var photos: MutableList<PhotoData> = arrayListOf()   //비어있는 불변 리스트 생성
+
+    //클린 아키텍쳐
+    private var photos: MutableList<Photo> = arrayListOf()   //비어있는 불변 리스트 생성
 
     //클릭 인터페이스 정의
     interface OnPhotoItemClickListener{
-        fun onPhotoClick(position: Int, photoList: List<PhotoData>)
+        fun onPhotoClick(position: Int, photo: List<Photo>)
     }
 
     //클릭 리스너 선언
@@ -40,7 +42,7 @@ class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
         return photos.size
     }
 
-    fun addItem(photoList: List<PhotoData>) {
+    fun addItem(photoList: List<Photo>) {
 //        photos = photoList
         photos = photoList.toMutableList()
         notifyDataSetChanged()
@@ -54,22 +56,6 @@ class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
     }
 
 
-    //mapping 작업
-//    fun addFavItem(favoriteList: List<Photo>) {
-//        val convert = favoriteList.map {
-//            PhotoData(
-//                id = it.id,
-//                width = it.width,
-//                height = it.height,
-//                description = it.description,
-//                altDescription = it.altDescription,
-//                urls = Urls(regular = it.url, full = it.url)
-//            )
-//        }
-//        addItem(convert)
-//    }
-
-
     inner class Holder(private val binding: ItemPhotoBinding): RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -79,10 +65,10 @@ class PhotoAdapter: RecyclerView.Adapter<PhotoAdapter.Holder>() {
             }
         }
 
-        fun bind(photo: PhotoData) {
+        fun bind(photo: Photo) {
             binding.apply {
                 Glide.with(binding.root.context)
-                    .load(photo.urls.regular)
+                    .load(photo.thumbUrl)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(binding.photoImageView)

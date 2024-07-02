@@ -6,5 +6,8 @@ import javax.inject.Inject
 class GetRandomPhotoListUseCase @Inject constructor(
     private val unsplashRepository: UnsplashRepository
 ) {
+    //fake
+//    suspend fun execute() = unsplashRepository.getPhotoListFake()
+
     suspend fun execute() = unsplashRepository.getPhotoList()
 }
