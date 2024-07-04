@@ -29,6 +29,11 @@ class PhotoViewModel @Inject constructor(
     val photoData: LiveData<List<Photo>> = _photoList
 
 
+    //ErrorHandling(Live 데이터로 관찰)
+    private val _ephotoList = MutableLiveData<Result<List<Photo>>>()
+    val ephotoData: LiveData<Result<List<Photo>>> = _ephotoList
+
+
     private val _query = MutableLiveData<String>("")
     val query: LiveData<String> = _query
     fun searchImg(query: String) {
@@ -42,7 +47,10 @@ class PhotoViewModel @Inject constructor(
 
     private fun searchScope(query: String) {
         viewModelScope.launch {
-            _photoList.value = getSearchPhotoListUseCase.execute(query)
+//            _photoList.value = getSearchPhotoListUseCase.execute(query)
+
+            //error 처리 추가
+            _ephotoList.value = getSearchPhotoListUseCase.execute(query)
         }
     }
 
@@ -50,7 +58,10 @@ class PhotoViewModel @Inject constructor(
     private fun photoScope() {
 
         viewModelScope.launch {
-            _photoList.value = getRandomPhotoListUseCase.execute()
+//            _photoList.value = getRandomPhotoListUseCase.execute()
+
+            //error 처리 추가
+            _ephotoList.value = getRandomPhotoListUseCase.execute()
         }
     }
 }

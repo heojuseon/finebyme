@@ -106,9 +106,27 @@ class ImageListFragment : Fragment() {
         binding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
 
         //viewModel 의 photoData 관찰하여 데이터가 변경될 때마다 UI를 업데이트
-        photoViewModel.photoData.observe(viewLifecycleOwner, Observer { photos ->
-            adapter.addItem(photos)
-            getPhotos(photos)
+//        photoViewModel.photoData.observe(viewLifecycleOwner, Observer { photos ->
+//            adapter.addItem(photos)
+//            getPhotos(photos)
+//        })
+
+        photoViewModel.ephotoData.observe(viewLifecycleOwner, Observer { result ->
+            when{
+                result.isSuccess -> {
+                    val photos = result.getOrNull()
+                    if (photos != null) {
+                        adapter.addItem(photos)
+                        getPhotos(photos)
+                    }
+                }
+                result.isFailure -> {
+                    val errorMessage = result.exceptionOrNull()
+                    errorMessage?.message.let {
+                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         })
     }
 

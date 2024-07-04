@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.finebyme.data.datasource.UnsplashDataSource
 import com.example.finebyme.data.dto.mapper.PhotoMapper.toDomain
 import com.example.finebyme.domain.entity.Photo
+import com.example.finebyme.domain.entity.PhotoError
 import com.example.finebyme.domain.repositoryinterface.UnsplashRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,21 +13,52 @@ import javax.inject.Inject
 class UnsplashRepositoryImpl @Inject constructor(
     private val unsplashDataSource: UnsplashDataSource
 ) : UnsplashRepository {
-    override suspend fun getPhotoList(): List<Photo>{
+//    override suspend fun getPhotoList(): List<Photo>{
+//        return try {
+//            // 네트워크 요청을 IO 스레드에서 실행
+//            val response = withContext(Dispatchers.IO){
+//                unsplashDataSource.getPhotoList()
+//            }
+//            if (response.isSuccessful){ //응답 성공시
+//                response.body()!!.map { it.toDomain() }
+//            } else {
+//                Log.d("error: ", "error")
+//                emptyList()
+//            }
+//        } catch (e: Exception){
+//            Log.e("UnsplashRepository", "Failed to fetch photo list", e)
+//            emptyList()
+//        }
+//    }
+
+    override suspend fun getPhotoList(): Result<List<Photo>>{
         return try {
             // 네트워크 요청을 IO 스레드에서 실행
             val response = withContext(Dispatchers.IO){
                 unsplashDataSource.getPhotoList()
             }
-            if (response.isSuccessful){ //응답 성공시
-                response.body()!!.map { it.toDomain() }
+            if (response.isSuccessful){
+                Log.d("UnsplashAPI_State", "response: ${response.code()}")
+                Result.success(response.body()!!.map { it.toDomain() })
             } else {
-                Log.d("error: ", "error")
-                emptyList()
+                when(response.code()) {
+                    //enum class
+                    401 -> {
+                        Log.d("UnsplashAPI_State", "response: ${response.code()}")
+                        Result.failure(Exception(PhotoError.UNAUTHORIZED.message))
+                    }
+                    else -> {
+                        Log.d("UnsplashAPI_State", "response: ${response.code()}")
+                        Result.failure(Exception(PhotoError.LIMITEXCEEDED.message))
+                    }
+                    //sealed class
+//                    401 -> Result.failure(Exception(PhotoErrorAPI.UNAUTHORIZED().message))
+//                    else -> Result.failure(Exception(PhotoErrorAPI.LIMITEXCEEDED().message))
+                }
             }
         } catch (e: Exception){
             Log.e("UnsplashRepository", "Failed to fetch photo list", e)
-            emptyList()
+            Result.failure(e)
         }
     }
 
@@ -36,21 +68,52 @@ class UnsplashRepositoryImpl @Inject constructor(
 //    }
 
 
-    override suspend fun getSearchPhotoList(query: String): List<Photo> {
+//    override suspend fun getSearchPhotoList(query: String): List<Photo> {
+//
+//        return try {
+//            val response = withContext(Dispatchers.IO){
+//                unsplashDataSource.getSearchPhoto(query)
+//            }
+//            if (response.isSuccessful){ //응답 성공시
+//                response.body()!!.map { it.toDomain() }
+//            } else {
+//                Log.d("error: ", "error")
+//                emptyList()
+//            }
+//        }catch (e: Exception){
+//            Log.e("UnsplashRepository", "Failed to fetch photo list", e)
+//            emptyList()
+//        }
+//    }
 
+    override suspend fun getSearchPhotoList(query: String): Result<List<Photo>> {
         return try {
-            val response = withContext(Dispatchers.IO){
+            val response = withContext(Dispatchers.IO) {
                 unsplashDataSource.getSearchPhoto(query)
             }
-            if (response.isSuccessful){ //응답 성공시
-                response.body()!!.map { it.toDomain() }
+            if (response.isSuccessful) { //응답 성공시
+                Log.d("UnsplashAPI_State", "response: ${response.code()}")
+                Result.success(response.body()!!.map { it.toDomain() })
             } else {
-                Log.d("error: ", "error")
-                emptyList()
+                when (response.code()) {
+                    //enum class
+                    401 -> {
+                        Log.d("UnsplashAPI_State", "response: ${response.code()}")
+                        Result.failure(Exception(PhotoError.UNAUTHORIZED.message))
+                    }
+
+                    else -> {
+                        Log.d("UnsplashAPI_State", "response: ${response.code()}")
+                        Result.failure(Exception(PhotoError.LIMITEXCEEDED.message))
+                    }
+                    //sealed class
+//                    401 -> Result.failure(Exception(PhotoErrorAPI.UNAUTHORIZED().message))
+//                    else -> Result.failure(Exception(PhotoErrorAPI.LIMITEXCEEDED().message))
+                }
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("UnsplashRepository", "Failed to fetch photo list", e)
-            emptyList()
+            Result.failure(e)
         }
     }
 }
