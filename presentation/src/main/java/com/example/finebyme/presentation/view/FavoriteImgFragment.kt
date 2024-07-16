@@ -1,6 +1,8 @@
 package com.example.finebyme.presentation.view
 
 import android.app.Activity
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +19,7 @@ import com.example.finebyme.domain.entity.Photo
 import com.example.finebyme.presentation.adapter.PhotoAdapter
 import com.example.finebyme.presentation.databinding.FragmentFavoriteImgBinding
 import com.example.finebyme.presentation.viewmodel.PhotoRoomViewModel
+import com.example.finebyme.presentation.widget.FineByMeWidgetProvider
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -69,9 +72,36 @@ class FavoriteImgFragment : Fragment() {
             if (favoriteList != null){
                 getFavorite(favoriteList)
                 adapter.addItem(favoriteList)
+
+//                //UI 업데이트 시 위젯 동기화
+//                updateWidget(favoriteList[0], 0)
+//                updateWidget()
             }
         })
     }
+
+//    private fun updateWidget(photo: Photo, position: Int) {
+//        val intent = Intent(requireContext(), FineByMeWidgetProvider::class.java)
+//        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+//        val ids = AppWidgetManager.getInstance(requireContext()).getAppWidgetIds(ComponentName(requireContext(), FineByMeWidgetProvider::class.java))   // intent로 App Widget ID 값을 전달
+//        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+//        intent.putExtra("photoUrl", photo.fullUrl)   // 이미지 url 전달
+//        intent.putExtra("position", position)  // 포지션 전달
+//
+//        Log.d("!@#!@#", "send_photoUrl: ${photo.fullUrl}, send_position: $position")
+//        requireContext().sendBroadcast(intent)
+//    }
+
+//    private fun updateWidget(photo: Photo) {
+//        val intent = Intent(requireContext(), FineByMeWidgetProvider::class.java)
+//        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+//        val ids = AppWidgetManager.getInstance(requireContext()).getAppWidgetIds(ComponentName(requireContext(), FineByMeWidgetProvider::class.java))   //intent 로 App Widget ID 값을 전달
+//        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+//        intent.putExtra("photo", photo.fullUrl)   //이미지 url 전달
+//
+//        Log.d("!@#!@#", "send_photoID: ${photo.id}")
+//        requireContext().sendBroadcast(intent)
+//    }
 
     private fun getFavorite(favoriteList: List<Photo>) {
         for (favorite in favoriteList){

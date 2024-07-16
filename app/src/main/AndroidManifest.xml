@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
 
+    <!--  부팅시 자동실행  -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    
     <application
         android:name=".FineByMeApp"
         android:allowBackup="true"
@@ -33,6 +36,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".presentation.widget.FineByMeWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+            <!-- intent filter에는 AppWidgetManager에 정의되어있는 BroadcastReceiver를 명시,
+            기본적으로 위젯에 업데이트를 받아야 하기 때문에 APPWIDGET_UPDATE Action을 추가(AppWidgetProvider가 BroadcastReceiver 기반),
+             AppwidgetManager 는 필요에 따라 모든 위젯 브로드캐승트를 자동으로 AppWidgetProvider 에 전송-->
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/finebyme_appwidget_info"
+                />
+            <!-- AppWidgetProviderInfo를 연결(식별)하기 위해 meta-data를 추가 -->
+        </receiver>
+
+<!--        <service android:name=".presentation.service.FineByMeWidgetService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true"-->
+<!--            android:permission="android.permission.BIND_REMOTEVIEWS">-->
+<!--        </service>-->
+    <!--    RemoteViewsService시스템 만 시스템에 바인딩 할 수 있도록 권한을 부여, 내부 어댑터 설정에 필요    -->
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.finebyme.databinding.ActivityMainBinding
 import com.example.finebyme.presentation.view.FavoriteImgFragment
@@ -61,5 +62,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("!@#!@#", "MainActivity_onPause")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("!@#!@#", "MainActivity_onResume")
     }
 }
