@@ -4,11 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView android:text="fake_item1"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView android:text="fake_item2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:src="@drawable/vd_handwriting_io16"/>
 </LinearLayout>

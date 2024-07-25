@@ -8,7 +8,7 @@
 
     <group
         android:translateX="75"
-        android:translateY="125">
+        android:translateY="150">
         <path
             android:name="hash"
             android:pathData="M39,45L39,80 M57,45L57,80 M66,54L31,54 M66,71L31,71"

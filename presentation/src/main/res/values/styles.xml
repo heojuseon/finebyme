@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FineByMeWidget">
+        <item name="backgroundRadius">@dimen/my_background_radius_dimen</item>
+    </style>
+</resources>

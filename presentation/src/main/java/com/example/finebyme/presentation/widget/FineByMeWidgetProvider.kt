@@ -9,17 +9,17 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.view.View
 import android.widget.RemoteViews
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.finebyme.domain.usecase.GetFavoritePhotoListUseCase
 import com.example.finebyme.presentation.R
-import com.example.finebyme.presentation.view.FavoriteImgFragment
-//import com.example.finebyme.presentation.service.FineByMeWidgetService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,12 +38,25 @@ class FineByMeWidgetProvider: AppWidgetProvider() {
     @Inject
     lateinit var getFavoritePhotoListUseCase: GetFavoritePhotoListUseCase
 
+    /*
+        PendingIntent 객체 생성하여 Flag 값을 통해 액티비티를 띄울때 화면을 갱신해서 띄우고 싶을때는 FLAG_UPDATE_CURRENT
+        를 사용하지만 12 이상부터는 FLAG_MUTABLE 사용을 해야해서 분기처리
+     */
+    private val pendingIntentFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        PendingIntent.FLAG_MUTABLE
+    } else {
+        PendingIntent.FLAG_UPDATE_CURRENT
+    }
+
     override fun onReceive(context: Context, intent: Intent?) {
         super.onReceive(context, intent)
 
+        Log.d("!@#!@#", "getAction: ${intent?.action}")
+
         when (intent?.action) {
-            "com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET" -> {
-                Log.d("!@#!@#", "getAction: ${intent.action}")
+            "com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET",
+            "com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET_APP",
+            "com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET_ALARAM"  -> {
                 val appWidgetManager = AppWidgetManager.getInstance(context)
                 val componentName = ComponentName(context, FineByMeWidgetProvider::class.java)
                 val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
@@ -51,29 +64,41 @@ class FineByMeWidgetProvider: AppWidgetProvider() {
                 updateWidget(context, appWidgetManager, appWidgetIds)
             }
 
+
             Intent.ACTION_BOOT_COMPLETED -> {
                 Log.d("!@#!@#", "boot: ${intent.action}")
-                //AlarmManager
-                val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager  //as : AlarmManager 타입지정
-                val fromBootIntent = Intent(context, FineByMeWidgetProvider::class.java).apply {  // 알람 발생 시 실행될 intent
-                    action = "com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET"
-                }
-
-                //PendingIntent: 보류 인텐트 -> 지금 당장 인텐트를 실행하는 것이 아닌 특정 시간에 인텐트를 실행시킬 수 있도록 도와주는 객체
-                val pendingIntent = PendingIntent.getBroadcast(context, 0, fromBootIntent, PendingIntent.FLAG_MUTABLE)
-
-                alarmManager.setRepeating(
-//            AlarmManager.RTC_WAKEUP, //실제 시간 기준
-                    AlarmManager.ELAPSED_REALTIME_WAKEUP, //기기가 부팅된 후 경과한 시간 기준
-                    SystemClock.elapsedRealtime() + 10_000, // 10초 후 시작
-                    60_000,
-                    //alarmmanager 가 등록된 후 1분 후 부터 1분 간격으로 알림 발생
-//            SystemClock.elapsedRealtime() + 10000,
-//            60000,
-                    pendingIntent
-                )
+                setAlarm(context)
             }
         }
+
+    }
+
+    private fun setAlarm(context: Context) {
+        //AlarmManager
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager  //as : AlarmManager 타입지정
+        val fromBootIntent = Intent(context, FineByMeWidgetProvider::class.java).apply {  // 알람 발생 시 실행될 intent
+            action = "com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET_ALARAM"
+        }
+
+        //PendingIntent: 보류 인텐트 -> 지금 당장 인텐트를 실행하는 것이 아닌 특정 시간에 인텐트를 실행시킬 수 있도록 도와주는 객체
+//        val pendingIntent = PendingIntent.getBroadcast(context, 0, fromBootIntent, PendingIntent.FLAG_MUTABLE)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, fromBootIntent, pendingIntentFlag)
+
+        //다시 알람을 설정할때는 취소 후 다시 알람 1분 설정
+        alarmManager.cancel(pendingIntent)
+
+        /*
+            Doze 모드? : 기기를 오랫동안 사용하지 않는 경우 앱의 백그라운드 CPU 및 네트워크 활동을 지연시켜 배터리 소모를 줄여주는 모드
+                        - 사용자가 전원을 충전하지 않고 화면이 꺼진 채로 기기를 일정 기간 정지 상태로 두면 기기는 Doze 모드를 시작
+            ex) setExactAndAllowWhileIdle() : Doze 모드에서도 실행되는 알람을 설정해야 하는 경우 사용
+         */
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + 60_000,
+            pendingIntent
+
+        )
+        Log.d("!@#!@#", "Setting alarm with: ${SystemClock.elapsedRealtime() + 60_000} ----> ${System.currentTimeMillis()}")
 
     }
 
@@ -87,63 +112,62 @@ class FineByMeWidgetProvider: AppWidgetProvider() {
         Log.d("!@#!@#", "onUpdate: $context + $appWidgetManager + $appWidgetIds")
 
         updateWidget(context, appWidgetManager, appWidgetIds)
-
-        //AlarmManager
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager  //as : AlarmManager 타입지정
-        val intent = Intent(context, FineByMeWidgetProvider::class.java).apply {  // 알람 발생 시 실행될 intent
-            action = "com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET"
-        }
-
-        //PendingIntent: 보류 인텐트 -> 지금 당장 인텐트를 실행하는 것이 아닌 특정 시간에 인텐트를 실행시킬 수 있도록 도와주는 객체
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE)
-
-        alarmManager.setRepeating(
-//            AlarmManager.RTC_WAKEUP, //실제 시간 기준
-            AlarmManager.ELAPSED_REALTIME_WAKEUP, //기기가 부팅된 후 경과한 시간 기준
-            SystemClock.elapsedRealtime() + 10000, // 10초 후 시작
-            60000,
-            //alarmmanager 가 등록된 후 1분 후 부터 1분 간격으로 알림 발생
-//            SystemClock.elapsedRealtime() + 10000,
-//            60000,
-            pendingIntent
-        )
     }
+
 
     private fun updateWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
+        setAlarm(context)
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val widgetPhotoUrl = getFavoritePhotoListUseCase.execute()
 
                 withContext(Dispatchers.Main){
-
-                    //현재 포지션 이미지 url 가져오기
-                    val currentPhotoPosition = getCurrentPhotoPosition(context)
-                    val currentPhotoUrl = widgetPhotoUrl[currentPhotoPosition].fullUrl
-
                     appWidgetIds.forEach { appWidgetId ->
-                        val remoteViews = RemoteViews(context.packageName, R.layout.finebyme_widget_layout)
-                        loadImageIntoRemoteViews(context, currentPhotoUrl, remoteViews, appWidgetId, appWidgetManager)
+                        Log.d("!@#!@#", "updateWidget appWidgetId : $appWidgetId")
 
-                        // 클릭 시 실행될 인텐트 정의
+                        val remoteViews = RemoteViews(context.packageName, R.layout.finebyme_widget_layout)
+
+                        if (widgetPhotoUrl.isEmpty()){
+                            remoteViews.setViewVisibility(R.id.widget_photoImageView, View.GONE)
+                            remoteViews.setViewVisibility(R.id.image_null, View.VISIBLE)
+                        } else {
+                            var currentPhotoPosition = getCurrentPhotoPosition(context)
+
+                            /*
+                            room DB에 position[0, 1, 2] -> 3개의 이미지가 저장되어있을때 현재 위젯에 보여지고 있는 이미지가
+                            position 1 의 값이 해당될때 position 1번을 삭제할 경우 1분뒤 getCurrentPhotoPosition 의 값은 +1 이
+                            되어 2가 되지만 roomDB에 저장되어있는 widgetPhotoUrl 의 사이즈와 같아 오류가 발생
+                            */
+                            if (currentPhotoPosition >= widgetPhotoUrl.size) {
+                                currentPhotoPosition = 0
+                            }
+
+                            val currentPhotoUrl = widgetPhotoUrl[currentPhotoPosition].fullUrl
+                            Log.d("!@#!@#", "getCurrentPhotoPosition: $currentPhotoPosition")
+
+                            loadImageIntoRemoteViews(context, currentPhotoUrl, remoteViews, appWidgetId, appWidgetManager)
+
+                            remoteViews.setViewVisibility(R.id.widget_photoImageView, View.VISIBLE)
+                            remoteViews.setViewVisibility(R.id.image_null, View.GONE)
+
+                            saveCurrentPhotoPosition(context, (currentPhotoPosition + 1) % widgetPhotoUrl.size)
+                        }
+
                         val clickIntent = Intent()
                             .setClassName(context.packageName, "com.example.finebyme.MainActivity")
                             .apply {
-                                //FLAG_ACTIVITY_CLEAR_TOP : 호출하는 Activity가 스택에 있을 경우, 해당 Activity를 최상위로 올리면서, 그 위에 있던 Activity들을 모두 삭제하는 Flag
-                                //FLAG_ACTIVITY_SINGLE_TOP : 호출되는 Activity가 최상위에 있을 경우 해당 Activity를 다시 생성하지 않고, 있던 Activity를 다시 사용
                                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                             }
-                        val pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_MUTABLE)
+//                        val pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_MUTABLE)
+                        val pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, pendingIntentFlag)
                         remoteViews.setOnClickPendingIntent(R.id.root_widget_layout, pendingIntent)
-                    }
 
-                    //다음 포지션으로 이동(마지막 포지션인 경우 0으로 이동)
-//                    currentPhotoPosition = (currentPhotoPosition + 1) % widgetPhotoUrl.size
-                    saveCurrentPhotoPosition(context, (currentPhotoPosition + 1) % widgetPhotoUrl.size)
-                    Log.d("!@#!@#", "currentPhotoPosition: $currentPhotoPosition")
+                        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+                    }
                 }
 
             } catch (e: Exception){
@@ -160,6 +184,7 @@ class FineByMeWidgetProvider: AppWidgetProvider() {
     private fun saveCurrentPhotoPosition(context: Context, position: Int) {
         val prefs = context.getSharedPreferences("widget_prefs", Context.MODE_PRIVATE).edit()
         prefs.putInt("currentPhotoPosition", position).apply()
+        Log.d("!@#!@#", "saveCurrentPhotoPosition: $position")
     }
 
 
@@ -207,12 +232,14 @@ class FineByMeWidgetProvider: AppWidgetProvider() {
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
         //앱 위젯은 여러개가 등록 될 수 있는데, 최초의 앱 위젯이 등록 될 때 호출
+        Log.d("!@#!@#", "onEnabled()")
     }
 
     override fun onDisabled(context: Context?) {
         super.onDisabled(context)
         //마지막의 최종 앱 위젯 인스턴스가 삭제 될 때 호출
         //ex) 동일한 finebyme 위젯을 여러개 올라가져 있을때 마지막 finebyme 위젯을 삭제 할때 호출(이때 각 위젯은 서로 다른 인스턴스 가짐)
+        Log.d("!@#!@#", "onDisabled()")
     }
 
     override fun onRestored(context: Context?, oldWidgetIds: IntArray?, newWidgetIds: IntArray?) {
@@ -225,13 +252,5 @@ class FineByMeWidgetProvider: AppWidgetProvider() {
         super.onDeleted(context, appWidgetIds)
         //해당 앱 위젯이 삭제 될 때 호출
         Log.d("!@#!@#", "onDeleted()")
-
-        //위젯이 삭제 될때 alarmManager 해제
-        val intent = Intent(context, FineByMeWidgetProvider::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE)
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.cancel(pendingIntent)
-
-        Log.d("!@#!@#", "alarmManager_cancel: $pendingIntent")
     }
 }

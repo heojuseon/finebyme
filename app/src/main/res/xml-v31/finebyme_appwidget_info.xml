@@ -13,8 +13,16 @@
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/finebyme_widget_layout"
-    android:minWidth="100dp"
-    android:minHeight="100dp"
-    android:previewImage="@layout/widget_preview"
+    android:minWidth="80dp"
+    android:minHeight="80dp"
+    android:targetCellWidth="2"
+    android:targetCellHeight="2"
+    android:minResizeWidth="40dp"
+    android:minResizeHeight="40dp"
+    android:maxResizeWidth="200dp"
+    android:maxResizeHeight="200dp"
+    android:previewLayout="@layout/widget_preview"
+    android:resizeMode="horizontal|vertical"
+    android:description="@string/widget_name"
     android:widgetCategory="home_screen">
 </appwidget-provider>

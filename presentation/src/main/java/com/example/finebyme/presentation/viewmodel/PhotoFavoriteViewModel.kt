@@ -2,6 +2,7 @@ package com.example.finebyme.presentation.viewmodel
 
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
@@ -12,7 +13,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.finebyme.domain.entity.Photo
 import com.example.finebyme.domain.usecase.GetFavoriteCheckedPhotoUseCase
 import com.example.finebyme.domain.usecase.SetFavoritePhotoUseCase
+import com.example.finebyme.presentation.widget.FineByMeWidgetProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -21,6 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotoFavoriteViewModel @Inject constructor(
+    @ApplicationContext
+    private val context: Context,
     private val setFavoritePhotoUseCase: SetFavoritePhotoUseCase,
     private val getFavoriteCheckedPhotoUseCase: GetFavoriteCheckedPhotoUseCase
 ) : ViewModel() {
@@ -79,12 +84,22 @@ class PhotoFavoriteViewModel @Inject constructor(
     private fun deletePhoto(photo: Photo) {
         viewModelScope.launch {
             setFavoritePhotoUseCase.execute(false, photo)
+            Log.d("!@#!@#", "deletePhoto()")
+
+            val intent = Intent(context, FineByMeWidgetProvider::class.java)
+            intent.action = "com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET_APP"
+            context.sendBroadcast(intent)
         }
     }
 
     private fun insertPhoto(photo: Photo) {
         viewModelScope.launch {
             setFavoritePhotoUseCase.execute(true, photo)
+            Log.d("!@#!@#", "insertPhoto()")
+
+            val intent = Intent(context, FineByMeWidgetProvider::class.java)
+            intent.action = "com.example.finebyme.presentation.widget.ACTION_UPDATE_WIDGET_APP"
+            context.sendBroadcast(intent)
         }
 
     }
