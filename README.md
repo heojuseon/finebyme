@@ -19,6 +19,12 @@
 <img src="https://github.com/heojuseon/finebyme/assets/96325057/d110655e-3e30-4d0d-9b0f-3a00f32167da" width="30%">
 </p>
 
+### Widget
+
+| ![image](https://github.com/user-attachments/assets/c09c05b4-06fa-4adc-8ce6-a3c227f42ae7) | ![image](https://github.com/user-attachments/assets/8391cdf0-18dc-4def-abe7-2c7472fa5982) | ![image](https://github.com/user-attachments/assets/0773f12f-cb33-4f07-8250-495abe7de0a1) |
+| :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
+|                                  Android Emulator Widget                                  |                                   Device Preview Widget                                   |                                       Device Widget                                       |
+
 <br>
 
 ## ᛦ Branch
@@ -40,6 +46,7 @@
 - adapter
 - view
 - viewmodel
+- widget
 
 <br>
 
@@ -53,6 +60,8 @@
 - Coroutine
 - Errors_Handling ( Result < T > )
 - Clean Architecture
+- AppWidgetProvider(android widget)
+- BroadcastReceiver
 
 <br>
 
@@ -103,6 +112,8 @@
         │
         ├── view
         │
-        └── viewmodel
+        │── viewmodel
+        │
+        └── widget
 
 ```
