@@ -1,7 +1,7 @@
 # 📚 Fine by me
 
 - 👨🏻‍💻 Job(position) : Developer
-- 🗓️ Development_Perid : 2024/05 ~ 2024/07
+- 🗓️ Development_Period : 2024/05 ~ 2024/07
 
 ## 🧐 Project Introduce
 
@@ -27,7 +27,7 @@
 
 <br>
 
-## ᛦ Branch
+## ᛦ Clean Architecture
 
 ### Data
 
