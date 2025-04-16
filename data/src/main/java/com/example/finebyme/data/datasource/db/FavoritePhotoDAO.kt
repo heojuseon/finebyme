@@ -1,5 +1,6 @@
 package com.example.finebyme.data.datasource.db
 
+import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -20,4 +21,8 @@ interface FavoritePhotoDAO {    //데이터베이스에 접근하여 수행할 �
 
     @Query("delete from photos where id = :photoId")
     suspend fun deletePhoto(photoId: String)
+
+    @Query("SELECT * FROM photos")
+    fun getAllCursor(): Cursor
+
 }

@@ -1,10 +1,14 @@
 package com.example.finebyme
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.finebyme.databinding.ActivityMainBinding
 import com.example.finebyme.presentation.view.FavoriteImgFragment
@@ -43,6 +47,19 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavView.selectedItemId = R.id.fragment_image_list
         }
 
+        checkPermission()
+    }
+
+    private fun checkPermission() {
+        if(ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_CONTACTS
+            ) == PackageManager.PERMISSION_GRANTED) {
+            //TODO : 앱 실행시 퍼미션 등록되어있는 경우
+        } else {
+            //TODO : 퍼미션 등록 안되어있을 경우 launch
+            requestPermissionLauncher.launch(Manifest.permission.WRITE_CONTACTS)
+        }
     }
 
     private fun setBottomNavigationView() {
@@ -72,5 +89,17 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d("!@#!@#", "MainActivity_onResume")
+    }
+
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            //TODO : 퍼미션 허용
+        } else {
+            //TODO : 퍼미션 거부
+            finish()
+        }
     }
 }

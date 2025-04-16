@@ -16,6 +16,13 @@
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+
+    <!-- ContentProvider -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <permission android:name="com.example.finebyme.data.provider.READ_DB" android:protectionLevel="normal"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <permission android:name="com.example.finebyme.data.provider.WRITE_DB" android:protectionLevel="normal"/>
     
     <application
         android:name=".FineByMeApp"
@@ -68,6 +75,17 @@
 <!--            android:permission="android.permission.BIND_REMOTEVIEWS">-->
 <!--        </service>-->
     <!--    RemoteViewsService시스템 만 시스템에 바인딩 할 수 있도록 권한을 부여, 내부 어댑터 설정에 필요    -->
+
+        <provider
+            android:authorities="com.example.finebyme.data.provider.FbmContentProvider"
+            android:name=".data.provider.FbmContentProvider"
+            android:exported="true"
+            android:readPermission="com.example.finebyme.data.provider.READ_DATABASE"
+            android:writePermission="com.example.finebyme.data.provider.WRITE_DATABASE"/>
     </application>
 
 </manifest>
+
+<!--    android:readPermission="com.example.finebyme.data.provider.READ_DATABASE"-->
+<!--    android:writePermission="com.example.finebyme.data.provider.WRITE_DATABASE"-->
+<!--    android:grantUriPermissions="true"-->

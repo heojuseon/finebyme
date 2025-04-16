@@ -38,6 +38,23 @@ class FavoriteImgFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initFavoritePhoto()
+
+
+
+//        //ContentProvider Cusor data TEST
+//        binding.testBtn.setOnClickListener {
+//            val cursor = context?.contentResolver?.query(
+//                FbmContentProvider.CONTENT_URI,
+//                null,
+//                null,
+//                null,
+//                null
+//            )
+//
+//            cursor?.let {
+//                Log.d("TestContentProvider", "Cursor count: ${it.count}")
+//            } ?: Log.d("TestContentProvider", "Cursor is null")
+//        }
     }
 
     private fun initFavoritePhoto() {
