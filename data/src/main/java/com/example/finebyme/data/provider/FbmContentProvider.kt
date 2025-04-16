@@ -45,7 +45,7 @@ class FbmContentProvider: ContentProvider() {
         selection: String?,
         selectionArgs: Array<out String>?,
         sortOrder: String?
-    ): Cursor? {
+    ): Cursor {
         Log.d("FbmContentProvider", "query() 호출됨! URI: $uri")
         return when (sUriMatcher.match(uri)) {
             1 -> {
